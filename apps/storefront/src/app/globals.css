@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* ── Design tokens from the SanSan handoff ──────────────────────────────── */
+:root {
+  /* Brand colours */
+  --color-red:     #E8001D;
+  --color-dark:    #111111;
+  --color-darker:  #0D0D0D;
+  --color-black:   #000000;
+
+  /* Neutral palette */
+  --color-border:  #EAEAEA;
+  --color-border-light: #F0F0F0;
+  --color-bg-soft: #F6F6F4;
+  --color-bg-nav:  #111111;
+
+  /* Text */
+  --color-text:       #0D0D0D;
+  --color-text-muted: #999999;
+  --color-text-light: #BBBBBB;
+
+  /* Status */
+  --color-green:  #2a7a2a;
+  --color-stock-badge: #F7F8F6;
+
+  /* Spacing / layout */
+  --page-px: 34px;
+  --header-h-announcement: 30px;
+  --header-h-logo: 72px;
+  --header-h-nav: 46px;
+}
+
+@theme inline {
+  --font-sans: "DM Sans", "Helvetica Neue", Helvetica, sans-serif;
+
+  --color-brand-red:    var(--color-red);
+  --color-brand-dark:   var(--color-dark);
+  --color-brand-darker: var(--color-darker);
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Placeholder image pattern — matches the design .ph class */
+.img-placeholder {
+  background: repeating-linear-gradient(
+    135deg,
+    #f1f1ef 0, #f1f1ef 11px,
+    #e9e9e6 11px, #e9e9e6 22px
+  );
+}
+.img-placeholder-dark {
+  background: repeating-linear-gradient(
+    135deg,
+    #cdcac5 0, #cdcac5 14px,
+    #c4c1bc 14px, #c4c1bc 28px
+  );
+}
