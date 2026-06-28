@@ -2,6 +2,12 @@ packages:
   - 'apps/*'
   - 'packages/*'
 
+# Flat, npm-style node_modules. Required so Medusa's Admin bundler (Vite/Rollup,
+# rooted at apps/backend) can resolve its internal admin packages
+# (@medusajs/admin-shared, @medusajs/dashboard, @medusajs/draft-order/admin).
+# Without this, `medusa develop` and `medusa build` fail to resolve those imports.
+nodeLinker: hoisted
+
 # These packages need to run native build scripts (postinstall)
 allowBuilds:
   '@medusajs/telemetry': false

@@ -42,5 +42,6 @@ next-env.d.ts
 # Design handoff — keep the extracted folder as reference, ignore the zip
 Modern sanitaryware storefront redesign-handoff.zip
 
-# Migration data (CSV files contain cost prices — never commit)
+# Migration data (CSV / SQL dumps contain cost prices — never commit)
 scripts/data/
+uploads/

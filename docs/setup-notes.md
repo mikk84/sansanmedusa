@@ -18,8 +18,11 @@ Last updated: 2026-06-28.
 | Admin user created | ✅ `mikk@mikk.ee` (local) |
 | All local services running | ✅ Postgres :5433, Redis :6379, Meilisearch :7700, API :9000, storefront :3000 |
 | Storefront homepage | ✅ Pixel-matched to design, real logo |
-| Storefront PLP / PDP / checkout | 🚧 In progress (built against sample data) |
-| Product migration from Magento | ⏳ Waiting on the CSV at `scripts/data/catalog_product.csv` |
+| Medusa Admin panel | ✅ Renders + login works (see "Admin panel" below) |
+| Storefront PLP (catalog grid) | ✅ Built against sample data — `/kategooriad/[slug]` |
+| Storefront PDP (product detail) | ✅ Built against sample data — `/tooted/[slug]` |
+| Storefront checkout | ⏳ Not started (build in our design language) |
+| Product migration from Magento | ⏳ Switching source from CSV → full SQL dump (see below) |
 | Montonio / Resend live keys | ⏳ Placeholders in `.env` |
 
 ---
@@ -79,6 +82,86 @@ Medusa adds them (and `deleted_at`) implicitly. Declaring them throws
 `MEDUSA_ADMIN_EMAIL` / `MEDUSA_ADMIN_PASSWORD` from `.env` (POST
 `/auth/user/emailpass`) and using the returned JWT — **not** a static API key.
 A `sk_...` secret API key is a *Store* credential and is rejected by `/admin/*`.
+
+---
+
+## Admin panel: making it render under pnpm
+
+The Medusa Admin is a Vite-bundled React SPA. pnpm's default isolated
+`node_modules` hides Medusa's internal admin packages from Vite/Rollup (rooted
+at `apps/backend`), causing a cascade of "Failed to resolve import" overlays and
+blank renders. Three changes fixed the whole class:
+
+1. **`pnpm-workspace.yaml` → `nodeLinker: hoisted`** — flat, npm-style
+   `node_modules` so the bundler resolves `@medusajs/admin-shared`,
+   `@medusajs/dashboard`, `@medusajs/draft-order/admin`, etc. This is the
+   supported layout for Medusa + pnpm. **Applying it requires removing
+   `node_modules` and reinstalling** — pnpm won't re-link from cache.
+2. **Added `@medusajs/admin-sdk`** (backend dep) — the bundled `draft-order`
+   admin extension imports `defineRouteConfig` from it; without it the admin's
+   React tree threw silently and rendered a blank `#medusa` root.
+3. **`tsconfig.json` → `moduleResolution: "Bundler"`** — so TypeScript resolves
+   Medusa's package `exports` subpaths (`@medusajs/framework/http`, `/utils`,
+   `/mikro-orm/migrations`). The `ts-node` block overrides back to
+   CommonJS/Node for runtime config loading.
+
+> **Gotcha — reinstalling deps breaks the running Next.js dev server.** Swapping
+> `node_modules` (e.g. the `nodeLinker` change) under a live `next dev` makes
+> webpack fail with `Can't resolve 'next-flight-client-entry-loader'` and routes
+> 404. Fix: stop the storefront, `rm -rf apps/storefront/.next`, restart.
+
+> **Known issue — `medusa build` fails type-check.** With `moduleResolution:
+> bundler`, `tsc` now type-checks the backend modules and surfaces *real* type
+> errors that dev mode (transpileOnly) skipped: montonio's
+> `AbstractPaymentProvider` method signatures, a `MeiliSearch`→`Meilisearch`
+> casing typo in the search module, some `unknown`-typed service resolutions,
+> and a workflow return type. These don't affect `medusa develop` or the demo,
+> but must be fixed before a production build. Tracked as a follow-up.
+
+### Admin login (local)
+`http://localhost:9000/app` — `mikk@mikk.ee` / `SanSan2024!`. First load after a
+restart takes ~20–30s while Vite re-optimizes the dashboard dep graph, then it's
+instant.
+
+---
+
+## Storefront subpages (PLP / PDP)
+
+Built from the design handoff's `Alaleheküljed v2` frames, against the
+placeholder catalog in `src/lib/sample-data.ts`:
+
+- **`/kategooriad/[slug]`** — catalog grid (Frame 9). `CatalogView.tsx` holds the
+  interactive filter sidebar (subcategory + price + brand), sort dropdown,
+  removable filter chips, and pagination. Cards: `ProductCardPLP.tsx`.
+- **`/tooted/[slug]`** — product detail (Frame 3). Server component for the
+  static layout; `ProductBuyBlock.tsx` is the client island for size selection
+  and the quantity stepper.
+
+"Add to cart" buttons dispatch a `sansan:add-to-cart` window event for now; they
+get wired to the real Medusa cart when checkout is built. Once products are
+migrated, swap `sample-data.ts` calls for Medusa Store API queries — the
+component props already match the eventual API shape.
+
+---
+
+## Product migration: CSV → full SQL dump
+
+Plan changed from parsing the flat CSV to importing a **full Magento 1.9 MySQL
+dump** (placed at `scripts/data/*.sql.gz`, gitignored). The SQL source preserves
+the EAV structure — attribute sets, attribute groups, and option labels — that a
+flat CSV flattens or drops.
+
+Intended flow when the dump lands:
+1. Load the dump into a throwaway MariaDB container.
+2. Read the Magento EAV catalog tables (`catalog_product_entity*`,
+   `catalog_category_entity*`, `eav_attribute*`, `catalog_eav_attribute`,
+   `cataloginventory_stock_item`, etc.).
+3. Rewrite `scripts/migrate-products.ts` to query the DB instead of CSV.
+4. Upsert vendors → categories → products into Medusa via the Admin API
+   (auth via `MEDUSA_ADMIN_EMAIL` / `MEDUSA_ADMIN_PASSWORD`).
+
+The original 21 MB CSV export the client first provided sits in `uploads/`
+(gitignored) as a fallback reference.
 
 ---
 
