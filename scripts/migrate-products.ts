@@ -26,7 +26,9 @@ import { parse } from "csv-parse/sync"
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const MEDUSA_URL = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
-const MEDUSA_API_KEY = process.env.MEDUSA_API_KEY || "" // create in admin first
+const MEDUSA_EMAIL = process.env.MEDUSA_ADMIN_EMAIL || "mikk@mikk.ee"
+const MEDUSA_PASSWORD = process.env.MEDUSA_ADMIN_PASSWORD || "SanSan2024!"
+let MEDUSA_TOKEN = "" // obtained via login() at startup
 const CSV_PATH =
   process.argv.find((a) => a.startsWith("--csv="))?.split("=")[1] ||
   path.join(__dirname, "data", "catalog_product.csv")
@@ -77,6 +79,8 @@ async function main() {
   console.log(`CSV:    ${CSV_PATH}`)
   console.log(`Target: ${MEDUSA_URL}`)
   console.log()
+
+  await login()
 
   if (!fs.existsSync(CSV_PATH)) {
     console.error(`ERROR: CSV not found at ${CSV_PATH}`)
@@ -139,7 +143,7 @@ async function main() {
   console.log()
   console.log("Done. Run Meilisearch re-index next:")
   console.log("  curl -X POST http://localhost:9000/admin/search/reindex \\")
-  console.log(`    -H 'Authorization: Bearer ${MEDUSA_API_KEY}'`)
+  console.log(`    -H 'Authorization: Bearer <your-admin-token>'`)
 }
 
 // ── Parse & group rows ────────────────────────────────────────────────────────
@@ -218,12 +222,24 @@ function groupRows(rows: MagentoRow[]): Product[] {
 }
 
 // ── API helpers ───────────────────────────────────────────────────────────────
+async function login() {
+  const res = await fetch(`${MEDUSA_URL}/auth/user/emailpass`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: MEDUSA_EMAIL, password: MEDUSA_PASSWORD }),
+  })
+  if (!res.ok) throw new Error(`Login failed: ${res.status} ${await res.text()}`)
+  const data = await res.json()
+  MEDUSA_TOKEN = data.token
+  console.log("Authenticated as", MEDUSA_EMAIL)
+}
+
 async function api(method: string, endpoint: string, body?: any) {
   const res = await fetch(`${MEDUSA_URL}${endpoint}`, {
     method,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${MEDUSA_API_KEY}`,
+      Authorization: `Bearer ${MEDUSA_TOKEN}`,
     },
     body: body ? JSON.stringify(body) : undefined,
   })

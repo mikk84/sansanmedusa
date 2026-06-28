@@ -16,10 +16,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    // Partial pre-rendering for product pages (Next.js 15)
-    ppr: true,
-  },
+  // NOTE: experimental.ppr (Partial Pre-Rendering) requires a Next.js canary
+  // build. Re-enable once we pin a canary version. Running on stable 15.3.3.
 }
 
 export default nextConfig

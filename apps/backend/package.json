@@ -10,19 +10,27 @@
     "db:seed": "medusa exec ./src/scripts/seed.ts"
   },
   "dependencies": {
-    "@medusajs/medusa": "^2.17.1",
+    "@aws-sdk/client-s3": "^3.840.0",
     "@medusajs/dashboard": "^2.17.1",
     "@medusajs/file-local": "^2.17.1",
+    "@medusajs/framework": "^2.17.1",
     "@medusajs/fulfillment-manual": "^2.17.1",
-    "@medusajs/payment-stripe": "^2.17.1",
+    "@medusajs/medusa": "^2.17.1",
     "@medusajs/notification-sendgrid": "^2.17.1",
-    "resend": "^4.6.0",
-    "@aws-sdk/client-s3": "^3.840.0",
-    "pg": "^8.16.0"
+    "@medusajs/payment-stripe": "^2.17.1",
+    "jsonwebtoken": "^9.0.2",
+    "meilisearch": "^0.58.0",
+    "pg": "^8.16.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "resend": "^4.6.0"
   },
   "devDependencies": {
     "@medusajs/test-utils": "^2.17.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.32",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"
   }
 }

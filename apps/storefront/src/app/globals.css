@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Explicit source scanning — automatic detection misses files in the
+   pnpm monorepo because the inferred project root sits above this app. */
+@source "../../src";
+
 /* ── Design tokens from the SanSan handoff ──────────────────────────────── */
 :root {
   /* Brand colours */

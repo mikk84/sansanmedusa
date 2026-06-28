@@ -37,10 +37,11 @@ meilisearch --master-key=local-dev-key &
 cp .env.example .env
 ```
 
-Minimum required values for local development:
+Minimum required values for local development (the Docker Compose stack maps
+Postgres to host port **5433**):
 
 ```env
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/sansan_dev
+DATABASE_URL=postgresql://sansan:sansan_dev@localhost:5433/sansan_db
 REDIS_URL=redis://localhost:6379
 JWT_SECRET=local-dev-jwt-secret-minimum-32-chars
 COOKIE_SECRET=local-dev-cookie-secret-32-chars
@@ -49,17 +50,27 @@ RESEND_API_KEY=re_xxxx          # Get from resend.com (free tier works)
 MONTONIO_ACCESS_KEY=sandbox-key  # Get from Montonio merchant portal
 MONTONIO_SECRET_KEY=sandbox-key
 MONTONIO_ENVIRONMENT=sandbox
+
+# Used by scripts/migrate-products.ts to authenticate against /admin
+MEDUSA_ADMIN_EMAIL=you@sansan.ee
+MEDUSA_ADMIN_PASSWORD=YourPassword123
 ```
 
 ### 4. Initialize the database
 
 ```bash
 cd apps/backend
+
+# Generate the vendor module migration (first time only), then migrate
+pnpm exec medusa db:generate vendor
 pnpm db:migrate
 
 # Create your admin user
-npx medusa user -e admin@sansan.ee -p YourPassword123
+pnpm exec medusa user --email you@sansan.ee --password YourPassword123
 ```
+
+> See [setup-notes.md](setup-notes.md) for why custom modules need
+> `db:generate` first, and other environment gotchas.
 
 ### 5. Start development
 
@@ -92,8 +103,8 @@ pnpm type-check
 # Lint all workspaces
 pnpm lint
 
-# Run product migration
-MEDUSA_API_KEY=your-key pnpm migrate
+# Run product migration (backend must be running; auth via .env admin creds)
+pnpm migrate
 
 # Run only the storefront
 cd apps/storefront && pnpm dev

@@ -24,7 +24,5 @@ export const Vendor = model.define("vendor", {
 
   notes: model.text().nullable(),
   is_active: model.boolean().default(true),
-
-  created_at: model.dateTime(),
-  updated_at: model.dateTime(),
+  // created_at and updated_at are implicit on every Medusa model — do not declare them
 })

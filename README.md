@@ -38,13 +38,13 @@ sansanmedusa/
 
 ### Prerequisites
 
-| Tool | Version |
-|---|---|
-| Node.js | 20+ |
-| pnpm | 11+ |
-| PostgreSQL | 15+ |
-| Redis | 7+ |
-| Meilisearch | 1.7+ |
+| Tool | Version | Notes |
+|---|---|---|
+| Node.js | **22.13+** | pnpm v11 requires ≥22.13. Repo pins `22` in `.nvmrc`. On macOS: `brew install node@22` |
+| pnpm | 11+ | |
+| PostgreSQL | 15+ | Docker maps it to host port **5433** (5432 left free for other projects) |
+| Redis | 7+ | |
+| Meilisearch | 1.7+ | |
 
 ### 1. Clone & install
 
@@ -74,8 +74,20 @@ docker compose up -d
 
 ```bash
 cd apps/backend
+
+# Generate the migration for the custom vendor module (first time only)
+pnpm exec medusa db:generate vendor
+
+# Run all migrations (core Medusa modules + vendor)
 pnpm db:migrate
+
+# Create an admin user for the dashboard
+pnpm exec medusa user --email you@sansan.ee --password YourPassword123
 ```
+
+> **Note:** custom Medusa modules need their migration generated with
+> `db:generate <module>` before `db:migrate` will create their tables.
+> See [docs/setup-notes.md](docs/setup-notes.md) for the gotchas we hit.
 
 ### 5. Start development servers
 
@@ -98,9 +110,10 @@ pnpm dev
 See [docs/product-migration.md](docs/product-migration.md) for the full guide.
 
 ```bash
-# Quick run:
+# Quick run (backend must be running; the script logs in with the admin
+# credentials from .env — MEDUSA_ADMIN_EMAIL / MEDUSA_ADMIN_PASSWORD):
 cp /path/to/catalog_product.csv scripts/data/catalog_product.csv
-MEDUSA_API_KEY=your-key pnpm migrate
+pnpm migrate
 ```
 
 ---
@@ -113,6 +126,7 @@ MEDUSA_API_KEY=your-key pnpm migrate
 | [OMS & Vendor flow](docs/oms-vendor-flow.md) | How orders are routed to vendors, dropship vs terminal |
 | [Product migration](docs/product-migration.md) | Running the Magento CSV import |
 | [Development guide](docs/development.md) | Local setup, environment variables, common commands |
+| [Setup notes & build log](docs/setup-notes.md) | Gotchas, current status, why certain files look the way they do |
 
 ---
 

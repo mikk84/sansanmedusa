@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'DM Sans', 'Helvetica Neue', Helvetica, sans-serif; }
+  </style>
+</helmet>
+
+<!-- ═══════════════════════════════════════
+     VARIATION LABELS — DESKTOP ROW
+═══════════════════════════════════════ -->
+
+<div data-drags-parent="1" style="position:absolute;left:0;top:0;display:flex;align-items:center;gap:10px;">
+  <span style="background:#0D0D0D;color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:2px;">A — Vaikne</span>
+  <span style="font-size:11px;color:#999;">Minimalistlik · puhas · skandinaavialik</span>
+</div>
+<div data-drags-parent="1" style="position:absolute;left:1280px;top:0;display:flex;align-items:center;gap:10px;">
+  <span style="background:#0D0D0D;color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:2px;">B — Terav</span>
+  <span style="font-size:11px;color:#999;">Kontrastne · julgelt trükitud · kaasaegne</span>
+</div>
+<div data-drags-parent="1" style="position:absolute;left:2560px;top:0;display:flex;align-items:center;gap:10px;">
+  <span style="background:#0D0D0D;color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:2px;">C — Sild</span>
+  <span style="font-size:11px;color:#999;">Soe · editoriaal · prestiižne</span>
+</div>
+
+<!-- ═══════════════════════════════════════
+     VARIATION A — DESKTOP (1200 × 860)
+     White / minimal / floating card hero
+═══════════════════════════════════════ -->
+
+<div data-screen-label="A — Vaikne · Desktop" style="position:absolute;left:0;top:40px;width:1200px;height:860px;background:#FAFAF8;overflow:hidden;border-radius:2px;box-shadow:0 2px 16px rgba(0,0,0,.12);">
+
+  <!-- HEADER -->
+  <div style="height:70px;background:#fff;border-bottom:1px solid #E8E6E2;display:flex;align-items:center;padding:0 36px;gap:0;">
+    <img src="uploads/logo_general.png" alt="SANSAN" style="height:48px;width:auto;flex-shrink:0;">
+    <nav style="flex:1;display:flex;align-items:center;justify-content:center;gap:28px;">
+      <a style="font-size:14px;font-weight:400;color:#0D0D0D;text-decoration:none;white-space:nowrap;">Vannid</a>
+      <a style="font-size:14px;font-weight:400;color:#0D0D0D;text-decoration:none;white-space:nowrap;">Dušinurgad</a>
+      <a style="font-size:14px;font-weight:400;color:#0D0D0D;text-decoration:none;white-space:nowrap;">WC-potid</a>
+      <a style="font-size:14px;font-weight:400;color:#0D0D0D;text-decoration:none;white-space:nowrap;">Segistid</a>
+      <a style="font-size:14px;font-weight:400;color:#0D0D0D;text-decoration:none;white-space:nowrap;">Vannitoamööbel</a>
+      <a style="font-size:14px;font-weight:400;color:#888;text-decoration:none;white-space:nowrap;">Kõik kategooriad ↓</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:16px;flex-shrink:0;">
+      <div style="display:flex;align-items:center;background:#F2F0EC;border-radius:3px;padding:0 12px;height:36px;gap:8px;width:192px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#AAA" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span style="font-size:13px;color:#B0AEA9;">Otsi tooteid...</span>
+      </div>
+      <div style="position:relative;cursor:pointer;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span style="position:absolute;top:-5px;right:-6px;background:#E8001D;color:#fff;font-size:9px;font-weight:700;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1;">2</span>
+      </div>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+    </div>
+  </div>
+
+  <!-- HERO: full-bleed photo + floating card bottom-left -->
+  <div style="position:relative;height:460px;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,#e2dfda 0,#e2dfda 14px,#d5d2cd 14px,#d5d2cd 28px);display:flex;align-items:center;justify-content:center;">
+      <span style="font-family:monospace;font-size:12px;color:#9c9994;background:rgba(255,255,255,.88);padding:5px 14px;border-radius:2px;">lifestyle foto · hele, modernne vannituba</span>
+    </div>
+    <div style="position:absolute;bottom:40px;left:40px;background:#fff;padding:28px 32px;max-width:392px;box-shadow:0 4px 40px rgba(0,0,0,.1);">
+      <p style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E8001D;margin-bottom:10px;">Eesti suurim valik</p>
+      <h1 style="font-size:42px;font-weight:700;line-height:1.07;color:#0D0D0D;margin-bottom:12px;letter-spacing:-.025em;">Sinu unelmate<br>vannituba.</h1>
+      <p style="font-size:13px;color:#716E6A;line-height:1.55;margin-bottom:22px;">Kvaliteet, mida usaldad. Tarne 1–3 tööpäeva jooksul üle Eesti.</p>
+      <a style="display:inline-flex;align-items:center;gap:8px;background:#E8001D;color:#fff;font-size:14px;font-weight:600;padding:12px 24px;text-decoration:none;letter-spacing:.01em;cursor:pointer;">Vaata kollektsiooni <span>→</span></a>
+    </div>
+  </div>
+
+  <!-- CATEGORIES GRID -->
+  <div style="padding:24px 36px 0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <h2 style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0D0D0D;">Tootekategooriad</h2>
+      <a style="font-size:13px;color:#E8001D;text-decoration:none;font-weight:500;">Kõik kategooriad →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      <div style="display:flex;flex-direction:column;gap:8px;"><div style="height:104px;background:repeating-linear-gradient(135deg,#eeece8 0,#eeece8 9px,#e5e3df 9px,#e5e3df 18px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#b0adaa;">vann</span></div><span style="font-size:13px;font-weight:500;color:#0D0D0D;">Vannid</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><div style="height:104px;background:repeating-linear-gradient(135deg,#eeece8 0,#eeece8 9px,#e5e3df 9px,#e5e3df 18px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#b0adaa;">dušinurk</span></div><span style="font-size:13px;font-weight:500;color:#0D0D0D;">Dušinurgad</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><div style="height:104px;background:repeating-linear-gradient(135deg,#eeece8 0,#eeece8 9px,#e5e3df 9px,#e5e3df 18px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#b0adaa;">wc-pott</span></div><span style="font-size:13px;font-weight:500;color:#0D0D0D;">WC-potid</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><div style="height:104px;background:repeating-linear-gradient(135deg,#eeece8 0,#eeece8 9px,#e5e3df 9px,#e5e3df 18px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#b0adaa;">segisti</span></div><span style="font-size:13px;font-weight:500;color:#0D0D0D;">Segistid</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><div style="height:104px;background:repeating-linear-gradient(135deg,#eeece8 0,#eeece8 9px,#e5e3df 9px,#e5e3df 18px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#b0adaa;">mööbel</span></div><span style="font-size:13px;font-weight:500;color:#0D0D0D;">Vannitoamööbel</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><div style="height:104px;background:repeating-linear-gradient(135deg,#eeece8 0,#eeece8 9px,#e5e3df 9px,#e5e3df 18px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#b0adaa;">valamu</span></div><span style="font-size:13px;font-weight:500;color:#0D0D0D;">Valamud</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><div style="height:104px;background:repeating-linear-gradient(135deg,#eeece8 0,#eeece8 9px,#e5e3df 9px,#e5e3df 18px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#b0adaa;">saun</span></div><span style="font-size:13px;font-weight:500;color:#0D0D0D;">Saunakerised</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><div style="height:104px;background:repeating-linear-gradient(135deg,#eeece8 0,#eeece8 9px,#e5e3df 9px,#e5e3df 18px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#b0adaa;">lisad</span></div><span style="font-size:13px;font-weight:500;color:#0D0D0D;">Aksessuaarid</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════
+     VARIATION B — DESKTOP (1200 × 860)
+     Dark header / split hero / feature tiles
+═══════════════════════════════════════ -->
+
+<div data-screen-label="B — Terav · Desktop" style="position:absolute;left:1280px;top:40px;width:1200px;height:860px;background:#fff;overflow:hidden;border-radius:2px;box-shadow:0 2px 16px rgba(0,0,0,.12);">
+
+  <!-- DARK HEADER -->
+  <div style="height:64px;background:#0D0D0D;display:flex;align-items:center;padding:0 36px;gap:0;">
+    <img src="uploads/logo_general.png" alt="SANSAN" style="height:46px;width:auto;flex-shrink:0;">
+    <nav style="flex:1;display:flex;align-items:center;justify-content:center;gap:28px;">
+      <a style="font-size:14px;color:rgba(255,255,255,.6);text-decoration:none;white-space:nowrap;">Vannid</a>
+      <a style="font-size:14px;color:rgba(255,255,255,.6);text-decoration:none;white-space:nowrap;">Dušinurgad</a>
+      <a style="font-size:14px;color:#fff;text-decoration:none;white-space:nowrap;border-bottom:2px solid #E8001D;padding-bottom:2px;">WC-potid</a>
+      <a style="font-size:14px;color:rgba(255,255,255,.6);text-decoration:none;white-space:nowrap;">Segistid</a>
+      <a style="font-size:14px;color:rgba(255,255,255,.6);text-decoration:none;white-space:nowrap;">Vannitoamööbel</a>
+      <a style="font-size:14px;color:rgba(255,255,255,.4);text-decoration:none;white-space:nowrap;">Kõik ↓</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span style="font-size:13px;color:rgba(255,255,255,.65);">0,00 €</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPLIT HERO: 42% dark text / 58% photo -->
+  <div style="height:460px;display:flex;">
+    <div style="width:42%;background:#141414;padding:50px 40px;display:flex;flex-direction:column;justify-content:center;">
+      <span style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#E8001D;margin-bottom:16px;display:block;">Uued 2025</span>
+      <h1 style="font-size:44px;font-weight:800;line-height:1.04;color:#fff;margin-bottom:18px;letter-spacing:-.03em;">Puhta disaini<br>ja funktsiooni<br>süntees.</h1>
+      <p style="font-size:14px;color:rgba(255,255,255,.48);line-height:1.65;margin-bottom:28px;">Üle 10 000 vannitoatoote.<br>Tarne 1–3 tööpäeva üle Eesti.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;">
+        <a style="background:#E8001D;color:#fff;font-size:14px;font-weight:600;padding:12px 26px;text-decoration:none;display:inline-block;letter-spacing:.01em;cursor:pointer;">Avasta kollektsioon →</a>
+        <a style="font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;">Vaata kõiki kategooriaid</a>
+      </div>
+    </div>
+    <div style="flex:1;background:repeating-linear-gradient(135deg,#c8c5c0 0,#c8c5c0 14px,#bfbcb7 14px,#bfbcb7 28px);display:flex;align-items:center;justify-content:center;">
+      <span style="font-family:monospace;font-size:12px;color:#8a8884;background:rgba(255,255,255,.88);padding:5px 12px;border-radius:2px;">lifestyle foto · saun / dušiala</span>
+    </div>
+  </div>
+
+  <!-- FEATURE CATEGORY TILES: 4 × full-bleed -->
+  <div style="display:flex;height:336px;">
+    <div style="flex:1;position:relative;background:repeating-linear-gradient(135deg,#c0bdb8 0,#c0bdb8 14px,#b5b2ad 14px,#b5b2ad 28px);overflow:hidden;">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.6) 100%);"></div>
+      <div style="position:absolute;bottom:24px;left:24px;"><p style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">Vannid</p><p style="font-size:12px;color:rgba(255,255,255,.55);">24 toodet</p></div>
+      <div style="position:absolute;top:20px;right:20px;font-size:20px;color:rgba(255,255,255,.6);">→</div>
+    </div>
+    <div style="flex:1;position:relative;background:repeating-linear-gradient(135deg,#b8b5b0 0,#b8b5b0 14px,#adaaa5 14px,#adaaa5 28px);overflow:hidden;">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.6) 100%);"></div>
+      <div style="position:absolute;bottom:24px;left:24px;"><p style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">WC-potid</p><p style="font-size:12px;color:rgba(255,255,255,.55);">56 toodet</p></div>
+      <div style="position:absolute;top:20px;right:20px;font-size:20px;color:rgba(255,255,255,.6);">→</div>
+    </div>
+    <div style="flex:1;position:relative;background:repeating-linear-gradient(135deg,#c8c5c0 0,#c8c5c0 14px,#bfbcb7 14px,#bfbcb7 28px);overflow:hidden;">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.6) 100%);"></div>
+      <div style="position:absolute;bottom:24px;left:24px;"><p style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">Dušinurgad</p><p style="font-size:12px;color:rgba(255,255,255,.55);">38 toodet</p></div>
+      <div style="position:absolute;top:20px;right:20px;font-size:20px;color:rgba(255,255,255,.6);">→</div>
+    </div>
+    <div style="flex:1;position:relative;background:repeating-linear-gradient(135deg,#b0ada8 0,#b0ada8 14px,#a7a49f 14px,#a7a49f 28px);overflow:hidden;">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.6) 100%);"></div>
+      <div style="position:absolute;bottom:24px;left:24px;"><p style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">Segistid</p><p style="font-size:12px;color:rgba(255,255,255,.55);">72 toodet</p></div>
+      <div style="position:absolute;top:20px;right:20px;font-size:20px;color:rgba(255,255,255,.6);">→</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════
+     VARIATION C — DESKTOP (1200 × 860)
+     Red topbar / centered hero / editorial
+═══════════════════════════════════════ -->
+
+<div data-screen-label="C — Sild · Desktop" style="position:absolute;left:2560px;top:40px;width:1200px;height:860px;background:#F4F2EE;overflow:hidden;border-radius:2px;box-shadow:0 2px 16px rgba(0,0,0,.12);">
+
+  <!-- THIN RED TOP BAR -->
+  <div style="height:4px;background:#E8001D;"></div>
+
+  <!-- HEADER -->
+  <div style="height:68px;background:#fff;border-bottom:1px solid #E4E2DE;display:flex;align-items:center;padding:0 36px;gap:0;">
+    <img src="uploads/logo_general.png" alt="SANSAN" style="height:46px;width:auto;flex-shrink:0;">
+    <nav style="flex:1;display:flex;align-items:center;justify-content:center;gap:26px;">
+      <a style="font-size:14px;color:#0D0D0D;text-decoration:none;">Vannid</a>
+      <a style="font-size:14px;color:#0D0D0D;text-decoration:none;">Dušinurgad</a>
+      <a style="font-size:14px;color:#0D0D0D;text-decoration:none;">WC-potid</a>
+      <a style="font-size:14px;color:#0D0D0D;text-decoration:none;">Segistid</a>
+      <a style="font-size:14px;color:#0D0D0D;text-decoration:none;">Vannitoamööbel</a>
+      <a style="font-size:14px;color:#888;text-decoration:none;">Kõik ↓</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:16px;flex-shrink:0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <div style="display:flex;align-items:center;gap:6px;border:1.5px solid #E0DDD8;border-radius:100px;padding:6px 14px 6px 10px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span style="font-size:13px;font-weight:500;color:#0D0D0D;">Ostukorv (0)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO: full-width centered overlay -->
+  <div style="position:relative;height:440px;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,#c4c1bc 0,#c4c1bc 14px,#bbb8b3 14px,#bbb8b3 28px);"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.5) 100%);"></div>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 60px;">
+      <span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.68);margin-bottom:14px;display:block;">Eesti suurim sanitaarkaupade valik</span>
+      <h1 style="font-size:52px;font-weight:700;line-height:1.07;color:#fff;margin-bottom:16px;letter-spacing:-.03em;">Loo täiuslik vannituba</h1>
+      <p style="font-size:16px;font-weight:300;color:rgba(255,255,255,.72);line-height:1.5;margin-bottom:28px;max-width:500px;">Kvaliteet, funktsionaalsus, esteetika — ühes kohas.</p>
+      <div style="display:flex;gap:12px;">
+        <a style="background:#E8001D;color:#fff;font-size:14px;font-weight:600;padding:13px 28px;text-decoration:none;letter-spacing:.01em;cursor:pointer;">Vaata kollektsiooni</a>
+        <a style="background:transparent;color:#fff;font-size:14px;font-weight:400;padding:13px 28px;text-decoration:none;border:1.5px solid rgba(255,255,255,.5);cursor:pointer;">Uued tooted</a>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:10px;right:16px;font-family:monospace;font-size:10px;color:rgba(255,255,255,.3);">lifestyle foto · hele vannituba</div>
+  </div>
+
+  <!-- ANNOUNCEMENT STRIP -->
+  <div style="height:40px;background:#0D0D0D;display:flex;align-items:center;justify-content:center;gap:28px;">
+    <span style="font-size:12px;color:rgba(255,255,255,.8);">✓ Tasuta tarne üle 99€</span>
+    <span style="color:rgba(255,255,255,.22);font-size:14px;">·</span>
+    <span style="font-size:12px;color:rgba(255,255,255,.8);">✓ Tarneaeg 1–3 tööpäeva</span>
+    <span style="color:rgba(255,255,255,.22);font-size:14px;">·</span>
+    <span style="font-size:12px;color:rgba(255,255,255,.8);">✓ 30-päevane tagastus</span>
+    <span style="color:rgba(255,255,255,.22);font-size:14px;">·</span>
+    <span style="font-size:12px;color:rgba(255,255,255,.8);">☎ 6 406 405</span>
+  </div>
+
+  <!-- EDITORIAL CATEGORY TILES: 1 big + 4 small 2×2 -->
+  <div style="display:flex;height:308px;">
+    <div style="width:50%;position:relative;background:repeating-linear-gradient(135deg,#d4d1cc 0,#d4d1cc 14px,#cac7c2 14px,#cac7c2 28px);overflow:hidden;">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 20%,rgba(0,0,0,.54) 100%);"></div>
+      <div style="position:absolute;bottom:28px;left:28px;">
+        <p style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px;">Kategooria</p>
+        <p style="font-size:26px;font-weight:700;color:#fff;margin-bottom:12px;">Vannitoamööbel</p>
+        <a style="font-size:13px;color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:2px;">Vaata kõiki →</a>
+      </div>
+      <div style="position:absolute;top:16px;right:16px;font-family:monospace;font-size:9px;color:rgba(255,255,255,.28);">mööbel foto</div>
+    </div>
+    <div style="width:50%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;">
+      <div style="position:relative;background:repeating-linear-gradient(135deg,#c8c5c0 0,#c8c5c0 10px,#c0bdb8 10px,#c0bdb8 20px);overflow:hidden;"><div style="position:absolute;inset:0;background:rgba(0,0,0,.25);"></div><div style="position:absolute;bottom:14px;left:14px;"><p style="font-size:14px;font-weight:600;color:#fff;">WC-potid</p><p style="font-size:11px;color:rgba(255,255,255,.5);">56 toodet</p></div></div>
+      <div style="position:relative;background:repeating-linear-gradient(135deg,#c0bdb8 0,#c0bdb8 10px,#b8b5b0 10px,#b8b5b0 20px);overflow:hidden;"><div style="position:absolute;inset:0;background:rgba(0,0,0,.25);"></div><div style="position:absolute;bottom:14px;left:14px;"><p style="font-size:14px;font-weight:600;color:#fff;">Dušinurgad</p><p style="font-size:11px;color:rgba(255,255,255,.5);">38 toodet</p></div></div>
+      <div style="position:relative;background:repeating-linear-gradient(135deg,#cac7c2 0,#cac7c2 10px,#c2bfba 10px,#c2bfba 20px);overflow:hidden;"><div style="position:absolute;inset:0;background:rgba(0,0,0,.25);"></div><div style="position:absolute;bottom:14px;left:14px;"><p style="font-size:14px;font-weight:600;color:#fff;">Segistid</p><p style="font-size:11px;color:rgba(255,255,255,.5);">72 toodet</p></div></div>
+      <div style="position:relative;background:repeating-linear-gradient(135deg,#b8b5b0 0,#b8b5b0 10px,#b0ada8 10px,#b0ada8 20px);overflow:hidden;"><div style="position:absolute;inset:0;background:rgba(0,0,0,.25);"></div><div style="position:absolute;bottom:14px;left:14px;"><p style="font-size:14px;font-weight:600;color:#fff;">Valamud</p><p style="font-size:11px;color:rgba(255,255,255,.5);">44 toodet</p></div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════
+     MOBILE ROW LABELS
+═══════════════════════════════════════ -->
+
+<div data-drags-parent="1" style="position:absolute;left:405px;top:960px;display:flex;align-items:center;gap:8px;">
+  <span style="background:#555;color:#fff;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:2px;">A · Mobiil</span>
+  <span style="font-size:11px;color:#999;">390×780</span>
+</div>
+<div data-drags-parent="1" style="position:absolute;left:1685px;top:960px;display:flex;align-items:center;gap:8px;">
+  <span style="background:#555;color:#fff;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:2px;">B · Mobiil</span>
+  <span style="font-size:11px;color:#999;">390×780</span>
+</div>
+<div data-drags-parent="1" style="position:absolute;left:2965px;top:960px;display:flex;align-items:center;gap:8px;">
+  <span style="background:#555;color:#fff;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:2px;">C · Mobiil</span>
+  <span style="font-size:11px;color:#999;">390×780</span>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MOBILE A — Vaikne (390 × 780)
+═══════════════════════════════════════ -->
+
+<div data-screen-label="A — Vaikne · Mobiil" style="position:absolute;left:405px;top:988px;width:390px;height:780px;background:#FAFAF8;overflow:hidden;border-radius:2px;box-shadow:0 2px 16px rgba(0,0,0,.12);">
+
+  <div style="height:56px;background:#fff;border-bottom:1px solid #E8E6E2;display:flex;align-items:center;padding:0 16px;justify-content:space-between;">
+    <img src="uploads/logo_general.png" alt="SANSAN" style="height:38px;width:auto;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <div style="position:relative;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span style="position:absolute;top:-4px;right:-5px;background:#E8001D;color:#fff;font-size:9px;font-weight:700;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1;">2</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;cursor:pointer;">
+        <span style="width:22px;height:2px;background:#0D0D0D;display:block;"></span>
+        <span style="width:22px;height:2px;background:#0D0D0D;display:block;"></span>
+        <span style="width:16px;height:2px;background:#0D0D0D;display:block;"></span>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:relative;height:238px;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,#e2dfda 0,#e2dfda 12px,#d5d2cd 12px,#d5d2cd 24px);display:flex;align-items:center;justify-content:center;">
+      <span style="font-family:monospace;font-size:10px;color:#9c9994;background:rgba(255,255,255,.88);padding:4px 10px;border-radius:2px;">lifestyle foto</span>
+    </div>
+    <div style="position:absolute;bottom:14px;left:14px;right:14px;background:#fff;padding:16px 18px;box-shadow:0 2px 20px rgba(0,0,0,.1);">
+      <h1 style="font-size:22px;font-weight:700;line-height:1.1;color:#0D0D0D;margin-bottom:7px;letter-spacing:-.02em;">Sinu unelmate vannituba.</h1>
+      <p style="font-size:12px;color:#716E6A;margin-bottom:12px;">Tarne 1–3 tööpäeva üle Eesti.</p>
+      <a style="display:inline-flex;align-items:center;gap:6px;background:#E8001D;color:#fff;font-size:13px;font-weight:600;padding:10px 16px;text-decoration:none;cursor:pointer;">Vaata →</a>
+    </div>
+  </div>
+
+  <div style="padding:18px 14px 0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <h2 style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0D0D0D;">Kategooriad</h2>
+      <a style="font-size:12px;color:#E8001D;text-decoration:none;">Kõik →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
+      <div style="display:flex;flex-direction:column;gap:5px;"><div style="height:64px;background:repeating-linear-gradient(135deg,#edebe7 0,#edebe7 7px,#e4e2de 7px,#e4e2de 14px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#b0adaa;">vann</span></div><span style="font-size:10px;font-weight:500;color:#0D0D0D;text-align:center;">Vannid</span></div>
+      <div style="display:flex;flex-direction:column;gap:5px;"><div style="height:64px;background:repeating-linear-gradient(135deg,#edebe7 0,#edebe7 7px,#e4e2de 7px,#e4e2de 14px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#b0adaa;">duš</span></div><span style="font-size:10px;font-weight:500;color:#0D0D0D;text-align:center;">Dušinurgad</span></div>
+      <div style="display:flex;flex-direction:column;gap:5px;"><div style="height:64px;background:repeating-linear-gradient(135deg,#edebe7 0,#edebe7 7px,#e4e2de 7px,#e4e2de 14px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#b0adaa;">wc</span></div><span style="font-size:10px;font-weight:500;color:#0D0D0D;text-align:center;">WC-potid</span></div>
+      <div style="display:flex;flex-direction:column;gap:5px;"><div style="height:64px;background:repeating-linear-gradient(135deg,#edebe7 0,#edebe7 7px,#e4e2de 7px,#e4e2de 14px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#b0adaa;">segisti</span></div><span style="font-size:10px;font-weight:500;color:#0D0D0D;text-align:center;">Segistid</span></div>
+      <div style="display:flex;flex-direction:column;gap:5px;"><div style="height:64px;background:repeating-linear-gradient(135deg,#edebe7 0,#edebe7 7px,#e4e2de 7px,#e4e2de 14px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#b0adaa;">mööbel</span></div><span style="font-size:10px;font-weight:500;color:#0D0D0D;text-align:center;">Mööbel</span></div>
+      <div style="display:flex;flex-direction:column;gap:5px;"><div style="height:64px;background:repeating-linear-gradient(135deg,#edebe7 0,#edebe7 7px,#e4e2de 7px,#e4e2de 14px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#b0adaa;">valamu</span></div><span style="font-size:10px;font-weight:500;color:#0D0D0D;text-align:center;">Valamud</span></div>
+      <div style="display:flex;flex-direction:column;gap:5px;"><div style="height:64px;background:repeating-linear-gradient(135deg,#edebe7 0,#edebe7 7px,#e4e2de 7px,#e4e2de 14px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#b0adaa;">saun</span></div><span style="font-size:10px;font-weight:500;color:#0D0D0D;text-align:center;">Saunakerised</span></div>
+      <div style="display:flex;flex-direction:column;gap:5px;"><div style="height:64px;background:repeating-linear-gradient(135deg,#edebe7 0,#edebe7 7px,#e4e2de 7px,#e4e2de 14px);border-radius:2px;display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#b0adaa;">lisad</span></div><span style="font-size:10px;font-weight:500;color:#0D0D0D;text-align:center;">Aksessuaarid</span></div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <h2 style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0D0D0D;">Uued tooted</h2>
+      <a style="font-size:12px;color:#E8001D;text-decoration:none;">Kõik →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:#fff;border-radius:2px;overflow:hidden;"><div style="height:96px;background:repeating-linear-gradient(135deg,#edebe7 0,#edebe7 8px,#e4e2de 8px,#e4e2de 16px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:8px;color:#b0adaa;">toote foto</span></div><div style="padding:9px 10px 10px;"><p style="font-size:12px;font-weight:500;color:#0D0D0D;margin-bottom:3px;line-height:1.3;">Seinapealne WC-pott</p><p style="font-size:13px;font-weight:700;color:#0D0D0D;">399,00 €</p></div></div>
+      <div style="background:#fff;border-radius:2px;overflow:hidden;"><div style="height:96px;background:repeating-linear-gradient(135deg,#edebe7 0,#edebe7 8px,#e4e2de 8px,#e4e2de 16px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:8px;color:#b0adaa;">toote foto</span></div><div style="padding:9px 10px 10px;"><p style="font-size:12px;font-weight:500;color:#0D0D0D;margin-bottom:3px;line-height:1.3;">Dušikomplekt vihmapeaga</p><p style="font-size:13px;font-weight:700;color:#0D0D0D;">219,00 €</p></div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════
+     MOBILE B — Terav (390 × 780)
+═══════════════════════════════════════ -->
+
+<div data-screen-label="B — Terav · Mobiil" style="position:absolute;left:1685px;top:988px;width:390px;height:780px;background:#fff;overflow:hidden;border-radius:2px;box-shadow:0 2px 16px rgba(0,0,0,.12);">
+
+  <div style="height:56px;background:#0D0D0D;display:flex;align-items:center;padding:0 16px;justify-content:space-between;">
+    <img src="uploads/logo_general.png" alt="SANSAN" style="height:38px;width:auto;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+      <div style="display:flex;flex-direction:column;gap:4px;cursor:pointer;"><span style="width:22px;height:2px;background:#fff;display:block;"></span><span style="width:22px;height:2px;background:#fff;display:block;"></span><span style="width:16px;height:2px;background:#fff;display:block;"></span></div>
+    </div>
+  </div>
+
+  <!-- Stacked hero: dark text top, photo bottom -->
+  <div style="height:216px;background:#141414;padding:28px 20px 24px;display:flex;flex-direction:column;justify-content:center;">
+    <span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#E8001D;margin-bottom:12px;display:block;">Uued 2025</span>
+    <h1 style="font-size:28px;font-weight:800;line-height:1.07;color:#fff;margin-bottom:14px;letter-spacing:-.025em;">Puhta disaini<br>ja funktsiooni<br>süntees.</h1>
+    <a style="background:#E8001D;color:#fff;font-size:13px;font-weight:600;padding:10px 18px;text-decoration:none;display:inline-block;cursor:pointer;align-self:flex-start;">Avasta →</a>
+  </div>
+  <div style="height:140px;background:repeating-linear-gradient(135deg,#c8c5c0 0,#c8c5c0 12px,#bfbcb7 12px,#bfbcb7 24px);display:flex;align-items:center;justify-content:center;">
+    <span style="font-family:monospace;font-size:10px;color:#8a8884;background:rgba(255,255,255,.88);padding:4px 10px;border-radius:2px;">lifestyle foto</span>
+  </div>
+
+  <!-- 2×2 category tiles -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,152px);gap:2px;">
+    <div style="position:relative;background:repeating-linear-gradient(135deg,#c0bdb8 0,#c0bdb8 12px,#b5b2ad 12px,#b5b2ad 24px);overflow:hidden;"><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.58) 100%);"></div><div style="position:absolute;bottom:14px;left:14px;"><p style="font-size:14px;font-weight:700;color:#fff;">Vannid</p><p style="font-size:11px;color:rgba(255,255,255,.5);">24 toodet</p></div><div style="position:absolute;top:10px;right:10px;font-size:16px;color:rgba(255,255,255,.55);">→</div></div>
+    <div style="position:relative;background:repeating-linear-gradient(135deg,#b8b5b0 0,#b8b5b0 12px,#adaaa5 12px,#adaaa5 24px);overflow:hidden;"><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.58) 100%);"></div><div style="position:absolute;bottom:14px;left:14px;"><p style="font-size:14px;font-weight:700;color:#fff;">WC-potid</p><p style="font-size:11px;color:rgba(255,255,255,.5);">56 toodet</p></div><div style="position:absolute;top:10px;right:10px;font-size:16px;color:rgba(255,255,255,.55);">→</div></div>
+    <div style="position:relative;background:repeating-linear-gradient(135deg,#c8c5c0 0,#c8c5c0 12px,#bfbcb7 12px,#bfbcb7 24px);overflow:hidden;"><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.58) 100%);"></div><div style="position:absolute;bottom:14px;left:14px;"><p style="font-size:14px;font-weight:700;color:#fff;">Dušinurgad</p><p style="font-size:11px;color:rgba(255,255,255,.5);">38 toodet</p></div><div style="position:absolute;top:10px;right:10px;font-size:16px;color:rgba(255,255,255,.55);">→</div></div>
+    <div style="position:relative;background:repeating-linear-gradient(135deg,#b0ada8 0,#b0ada8 12px,#a7a49f 12px,#a7a49f 24px);overflow:hidden;"><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.58) 100%);"></div><div style="position:absolute;bottom:14px;left:14px;"><p style="font-size:14px;font-weight:700;color:#fff;">Segistid</p><p style="font-size:11px;color:rgba(255,255,255,.5);">72 toodet</p></div><div style="position:absolute;top:10px;right:10px;font-size:16px;color:rgba(255,255,255,.55);">→</div></div>
+  </div>
+
+  <div style="height:56px;background:#E8001D;display:flex;align-items:center;justify-content:center;">
+    <span style="font-size:13px;font-weight:600;color:#fff;letter-spacing:.02em;">Vaata kõiki kategooriaid →</span>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════
+     MOBILE C — Sild (390 × 780)
+═══════════════════════════════════════ -->
+
+<div data-screen-label="C — Sild · Mobiil" style="position:absolute;left:2965px;top:988px;width:390px;height:780px;background:#F4F2EE;overflow:hidden;border-radius:2px;box-shadow:0 2px 16px rgba(0,0,0,.12);">
+
+  <div style="height:4px;background:#E8001D;"></div>
+
+  <div style="height:56px;background:#fff;border-bottom:1px solid #E4E2DE;display:flex;align-items:center;padding:0 16px;justify-content:space-between;">
+    <img src="uploads/logo_general.png" alt="SANSAN" style="height:38px;width:auto;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <div style="display:flex;flex-direction:column;gap:4px;cursor:pointer;"><span style="width:22px;height:2px;background:#0D0D0D;display:block;"></span><span style="width:22px;height:2px;background:#0D0D0D;display:block;"></span><span style="width:16px;height:2px;background:#0D0D0D;display:block;"></span></div>
+    </div>
+  </div>
+
+  <div style="position:relative;height:252px;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,#c4c1bc 0,#c4c1bc 12px,#bbb8b3 12px,#bbb8b3 24px);"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.52) 100%);"></div>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;">
+      <h1 style="font-size:28px;font-weight:700;line-height:1.1;color:#fff;margin-bottom:10px;letter-spacing:-.02em;">Loo täiuslik<br>vannituba</h1>
+      <p style="font-size:13px;font-weight:300;color:rgba(255,255,255,.72);margin-bottom:16px;">Eesti suurim valik sanitaarkaupa.</p>
+      <a style="background:#E8001D;color:#fff;font-size:13px;font-weight:600;padding:10px 20px;text-decoration:none;cursor:pointer;">Vaata kollektsiooni</a>
+    </div>
+  </div>
+
+  <div style="height:36px;background:#0D0D0D;display:flex;align-items:center;justify-content:center;gap:14px;">
+    <span style="font-size:11px;color:rgba(255,255,255,.8);">✓ Tasuta tarne üle 99€</span>
+    <span style="color:rgba(255,255,255,.22);">·</span>
+    <span style="font-size:11px;color:rgba(255,255,255,.8);">✓ 1–3 tööpäeva</span>
+  </div>
+
+  <!-- Category pills -->
+  <div style="padding:14px 0 0;">
+    <div style="display:flex;gap:7px;padding:0 14px 12px;overflow-x:hidden;">
+      <span style="display:inline-flex;align-items:center;background:transparent;border:1.5px solid #E8001D;color:#E8001D;font-size:12px;font-weight:600;padding:6px 13px;border-radius:100px;white-space:nowrap;cursor:pointer;flex-shrink:0;">Kõik</span>
+      <span style="display:inline-flex;align-items:center;background:#fff;border:1.5px solid #E0DDD8;color:#0D0D0D;font-size:12px;padding:6px 13px;border-radius:100px;white-space:nowrap;cursor:pointer;flex-shrink:0;">Vannid</span>
+      <span style="display:inline-flex;align-items:center;background:#fff;border:1.5px solid #E0DDD8;color:#0D0D0D;font-size:12px;padding:6px 13px;border-radius:100px;white-space:nowrap;cursor:pointer;flex-shrink:0;">WC-potid</span>
+      <span style="display:inline-flex;align-items:center;background:#fff;border:1.5px solid #E0DDD8;color:#0D0D0D;font-size:12px;padding:6px 13px;border-radius:100px;white-space:nowrap;cursor:pointer;flex-shrink:0;">Dušinurgad</span>
+    </div>
+  </div>
+
+  <!-- 2×2 product cards -->
+  <div style="padding:0 12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div style="background:#fff;overflow:hidden;border-radius:2px;"><div style="height:126px;background:repeating-linear-gradient(135deg,#e2dfda 0,#e2dfda 9px,#d5d2cd 9px,#d5d2cd 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:8px;color:#9c9994;">toote foto</span></div><div style="padding:9px 10px 11px;"><p style="font-size:11px;font-weight:500;color:#0D0D0D;margin-bottom:3px;line-height:1.3;">Seinapealne WC-pott</p><p style="font-size:13px;font-weight:700;color:#0D0D0D;">399,00 €</p></div></div>
+    <div style="background:#fff;overflow:hidden;border-radius:2px;"><div style="height:126px;background:repeating-linear-gradient(135deg,#e2dfda 0,#e2dfda 9px,#d5d2cd 9px,#d5d2cd 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:8px;color:#9c9994;">toote foto</span></div><div style="padding:9px 10px 11px;"><p style="font-size:11px;font-weight:500;color:#0D0D0D;margin-bottom:3px;line-height:1.3;">Dušikomplekt vihmapeaga</p><p style="font-size:13px;font-weight:700;color:#0D0D0D;">219,00 €</p></div></div>
+    <div style="background:#fff;overflow:hidden;border-radius:2px;"><div style="height:126px;background:repeating-linear-gradient(135deg,#e2dfda 0,#e2dfda 9px,#d5d2cd 9px,#d5d2cd 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:8px;color:#9c9994;">toote foto</span></div><div style="padding:9px 10px 11px;"><p style="font-size:11px;font-weight:500;color:#0D0D0D;margin-bottom:3px;line-height:1.3;">Käänulik valamusegisti</p><p style="font-size:13px;font-weight:700;color:#0D0D0D;">189,00 €</p></div></div>
+    <div style="background:#fff;overflow:hidden;border-radius:2px;"><div style="height:126px;background:repeating-linear-gradient(135deg,#e2dfda 0,#e2dfda 9px,#d5d2cd 9px,#d5d2cd 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:8px;color:#9c9994;">toote foto</span></div><div style="padding:9px 10px 11px;"><p style="font-size:11px;font-weight:500;color:#0D0D0D;margin-bottom:3px;line-height:1.3;">Akrüülvann 170×75 cm</p><p style="font-size:13px;font-weight:700;color:#0D0D0D;">529,00 €</p></div></div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     VARIATION D — DESKTOP (1200 × 860)
+     Pure B/W Scandinavian · stark · clean
+═══════════════════════════════════════ -->
+
+<div data-drags-parent="1" style="position:absolute;left:3840px;top:0;display:flex;align-items:center;gap:10px;">
+  <span style="background:#0D0D0D;color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:2px;">D — Must-Valge</span>
+  <span style="font-size:11px;color:#999;">Skandinaavia · range · puhastatud</span>
+</div>
+
+<div data-screen-label="D — Must-Valge · Desktop" style="position:absolute;left:3840px;top:40px;width:1200px;height:860px;background:#fff;overflow:hidden;border-radius:2px;box-shadow:0 2px 16px rgba(0,0,0,.12);">
+
+  <!-- HEADER -->
+  <div style="height:70px;background:#fff;border-bottom:1.5px solid #000;display:flex;align-items:center;padding:0 36px;">
+    <img src="uploads/logo_general.png" alt="SANSAN" style="height:48px;width:auto;flex-shrink:0;">
+    <nav style="flex:1;display:flex;align-items:center;justify-content:center;gap:28px;">
+      <a style="font-size:14px;color:#000;text-decoration:none;white-space:nowrap;">Vannid</a>
+      <a style="font-size:14px;color:#000;text-decoration:none;white-space:nowrap;">Dušinurgad</a>
+      <a style="font-size:14px;color:#000;text-decoration:none;white-space:nowrap;">WC-potid</a>
+      <a style="font-size:14px;color:#000;text-decoration:none;white-space:nowrap;">Segistid</a>
+      <a style="font-size:14px;color:#000;text-decoration:none;white-space:nowrap;">Vannitoamööbel</a>
+      <a style="font-size:14px;color:#888;text-decoration:none;white-space:nowrap;">Kõik ↓</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:18px;flex-shrink:0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <div style="position:relative;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span style="position:absolute;top:-5px;right:-6px;background:#E8001D;color:#fff;font-size:9px;font-weight:700;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;">2</span>
+      </div>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+    </div>
+  </div>
+
+  <!-- HERO: bold text left / photo right -->
+  <div style="height:444px;display:flex;">
+    <div style="width:44%;background:#fff;padding:52px 44px;display:flex;flex-direction:column;justify-content:center;border-right:1.5px solid #000;">
+      <span style="font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#E8001D;margin-bottom:20px;display:block;">Eesti suurim valik · 2025</span>
+      <h1 style="font-size:56px;font-weight:800;line-height:.95;color:#000;margin-bottom:22px;letter-spacing:-.04em;text-transform:uppercase;">Sinu<br>unelmate<br>vannituba.</h1>
+      <p style="font-size:13px;color:#555;line-height:1.65;margin-bottom:30px;max-width:280px;">Üle 10 000 toote. Tarne 1–3 tööpäeva üle Eesti.</p>
+      <div style="display:flex;gap:14px;align-items:center;">
+        <a style="background:#E8001D;color:#fff;font-size:13px;font-weight:700;padding:14px 26px;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;">Vaata kollektsiooni</a>
+        <a style="font-size:13px;color:#000;text-decoration:none;border-bottom:1.5px solid #000;padding-bottom:2px;cursor:pointer;">Uued tooted →</a>
+      </div>
+    </div>
+    <div style="flex:1;background:repeating-linear-gradient(135deg,#d4d4d4 0,#d4d4d4 14px,#cacaca 14px,#cacaca 28px);display:flex;align-items:center;justify-content:center;">
+      <span style="font-family:monospace;font-size:12px;color:#888;background:rgba(255,255,255,.92);padding:5px 14px;">lifestyle foto · hele, modernne vannituba</span>
+    </div>
+  </div>
+
+  <!-- RED STRIPE -->
+  <div style="height:3px;background:#E8001D;"></div>
+
+  <!-- CATEGORIES: unified border grid -->
+  <div style="padding:22px 36px 0;background:#fff;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1.5px solid #000;">
+      <h2 style="font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#000;">Tootekategooriad</h2>
+      <a style="font-size:11px;color:#E8001D;text-decoration:none;font-weight:700;letter-spacing:.08em;text-transform:uppercase;">Kõik →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1.5px solid #000;">
+      <div style="border-right:1.5px solid #000;overflow:hidden;"><div style="height:94px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 9px,#dedede 9px,#dedede 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#999;">vann</span></div><div style="padding:8px 12px;border-top:1.5px solid #000;"><span style="font-size:13px;font-weight:600;color:#000;">Vannid</span></div></div>
+      <div style="border-right:1.5px solid #000;overflow:hidden;"><div style="height:94px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 9px,#dedede 9px,#dedede 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#999;">dušinurk</span></div><div style="padding:8px 12px;border-top:1.5px solid #000;"><span style="font-size:13px;font-weight:600;color:#000;">Dušinurgad</span></div></div>
+      <div style="border-right:1.5px solid #000;overflow:hidden;"><div style="height:94px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 9px,#dedede 9px,#dedede 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#999;">wc-pott</span></div><div style="padding:8px 12px;border-top:1.5px solid #000;"><span style="font-size:13px;font-weight:600;color:#000;">WC-potid</span></div></div>
+      <div style="overflow:hidden;"><div style="height:94px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 9px,#dedede 9px,#dedede 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#999;">segisti</span></div><div style="padding:8px 12px;border-top:1.5px solid #000;"><span style="font-size:13px;font-weight:600;color:#000;">Segistid</span></div></div>
+      <div style="border-right:1.5px solid #000;border-top:1.5px solid #000;overflow:hidden;"><div style="height:94px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 9px,#dedede 9px,#dedede 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#999;">mööbel</span></div><div style="padding:8px 12px;border-top:1.5px solid #000;"><span style="font-size:13px;font-weight:600;color:#000;">Vannitoamööbel</span></div></div>
+      <div style="border-right:1.5px solid #000;border-top:1.5px solid #000;overflow:hidden;"><div style="height:94px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 9px,#dedede 9px,#dedede 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#999;">valamu</span></div><div style="padding:8px 12px;border-top:1.5px solid #000;"><span style="font-size:13px;font-weight:600;color:#000;">Valamud</span></div></div>
+      <div style="border-right:1.5px solid #000;border-top:1.5px solid #000;overflow:hidden;"><div style="height:94px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 9px,#dedede 9px,#dedede 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#999;">saun</span></div><div style="padding:8px 12px;border-top:1.5px solid #000;"><span style="font-size:13px;font-weight:600;color:#000;">Saunakerised</span></div></div>
+      <div style="border-top:1.5px solid #000;overflow:hidden;"><div style="height:94px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 9px,#dedede 9px,#dedede 18px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:9px;color:#999;">lisad</span></div><div style="padding:8px 12px;border-top:1.5px solid #000;"><span style="font-size:13px;font-weight:600;color:#000;">Aksessuaarid</span></div></div>
+    </div>
+  </div>
+
+  <!-- BLACK FOOTER STRIP -->
+  <div style="position:absolute;bottom:0;left:0;right:0;height:40px;background:#000;display:flex;align-items:center;justify-content:center;gap:28px;">
+    <span style="font-size:12px;color:rgba(255,255,255,.8);">✓ Tasuta tarne üle 99€</span>
+    <span style="color:rgba(255,255,255,.25);">·</span>
+    <span style="font-size:12px;color:rgba(255,255,255,.8);">✓ Tarneaeg 1–3 tööpäeva</span>
+    <span style="color:rgba(255,255,255,.25);">·</span>
+    <span style="font-size:12px;color:rgba(255,255,255,.8);">✓ 30-päevane tagastus</span>
+    <span style="color:rgba(255,255,255,.25);">·</span>
+    <span style="font-size:12px;color:rgba(255,255,255,.8);">☎ 6 406 405</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MOBILE D — Must-Valge (390 × 780)
+═══════════════════════════════════════ -->
+
+<div data-drags-parent="1" style="position:absolute;left:4245px;top:960px;display:flex;align-items:center;gap:8px;">
+  <span style="background:#555;color:#fff;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:2px;">D · Mobiil</span>
+  <span style="font-size:11px;color:#999;">390×780</span>
+</div>
+
+<div data-screen-label="D — Must-Valge · Mobiil" style="position:absolute;left:4245px;top:988px;width:390px;height:780px;background:#fff;overflow:hidden;border-radius:2px;box-shadow:0 2px 16px rgba(0,0,0,.12);">
+
+  <div style="height:56px;background:#fff;border-bottom:1.5px solid #000;display:flex;align-items:center;padding:0 16px;justify-content:space-between;">
+    <img src="uploads/logo_general.png" alt="SANSAN" style="height:38px;width:auto;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <div style="position:relative;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span style="position:absolute;top:-4px;right:-5px;background:#E8001D;color:#fff;font-size:9px;font-weight:700;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;">2</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;cursor:pointer;"><span style="width:22px;height:2px;background:#000;display:block;"></span><span style="width:22px;height:2px;background:#000;display:block;"></span><span style="width:16px;height:2px;background:#000;display:block;"></span></div>
+    </div>
+  </div>
+
+  <!-- HERO: full-bleed with dark overlay + bold white type -->
+  <div style="height:264px;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,#c4c4c4 0,#c4c4c4 14px,#bababa 14px,#bababa 28px);"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.06) 0%,rgba(0,0,0,.75) 100%);"></div>
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:22px 18px 20px;">
+      <h1 style="font-size:34px;font-weight:800;line-height:.95;color:#fff;margin-bottom:14px;letter-spacing:-.03em;text-transform:uppercase;">Sinu<br>unelmate<br>vannituba.</h1>
+      <a style="display:inline-flex;align-items:center;gap:6px;background:#E8001D;color:#fff;font-size:13px;font-weight:700;padding:11px 18px;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;">Vaata kollektsiooni</a>
+    </div>
+  </div>
+
+  <!-- RED STRIPE -->
+  <div style="height:3px;background:#E8001D;"></div>
+
+  <!-- CATEGORIES 4-col compact grid -->
+  <div style="padding:14px 14px 0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <h2 style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#000;">Kategooriad</h2>
+      <a style="font-size:11px;color:#E8001D;font-weight:700;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;">Kõik →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1.5px solid #000;">
+      <div style="border-right:1.5px solid #000;overflow:hidden;"><div style="height:50px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 7px,#dedede 7px,#dedede 14px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#999;">vann</span></div><div style="padding:5px 0;border-top:1.5px solid #000;text-align:center;"><span style="font-size:9px;font-weight:600;color:#000;">Vannid</span></div></div>
+      <div style="border-right:1.5px solid #000;overflow:hidden;"><div style="height:50px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 7px,#dedede 7px,#dedede 14px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#999;">duš</span></div><div style="padding:5px 0;border-top:1.5px solid #000;text-align:center;"><span style="font-size:9px;font-weight:600;color:#000;">Dušinurgad</span></div></div>
+      <div style="border-right:1.5px solid #000;overflow:hidden;"><div style="height:50px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 7px,#dedede 7px,#dedede 14px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#999;">wc</span></div><div style="padding:5px 0;border-top:1.5px solid #000;text-align:center;"><span style="font-size:9px;font-weight:600;color:#000;">WC-potid</span></div></div>
+      <div style="overflow:hidden;"><div style="height:50px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 7px,#dedede 7px,#dedede 14px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#999;">segisti</span></div><div style="padding:5px 0;border-top:1.5px solid #000;text-align:center;"><span style="font-size:9px;font-weight:600;color:#000;">Segistid</span></div></div>
+      <div style="border-right:1.5px solid #000;border-top:1.5px solid #000;overflow:hidden;"><div style="height:50px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 7px,#dedede 7px,#dedede 14px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#999;">mööbel</span></div><div style="padding:5px 0;border-top:1.5px solid #000;text-align:center;"><span style="font-size:9px;font-weight:600;color:#000;">Mööbel</span></div></div>
+      <div style="border-right:1.5px solid #000;border-top:1.5px solid #000;overflow:hidden;"><div style="height:50px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 7px,#dedede 7px,#dedede 14px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#999;">valamu</span></div><div style="padding:5px 0;border-top:1.5px solid #000;text-align:center;"><span style="font-size:9px;font-weight:600;color:#000;">Valamud</span></div></div>
+      <div style="border-right:1.5px solid #000;border-top:1.5px solid #000;overflow:hidden;"><div style="height:50px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 7px,#dedede 7px,#dedede 14px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#999;">saun</span></div><div style="padding:5px 0;border-top:1.5px solid #000;text-align:center;"><span style="font-size:9px;font-weight:600;color:#000;">Saunakerised</span></div></div>
+      <div style="border-top:1.5px solid #000;overflow:hidden;"><div style="height:50px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 7px,#dedede 7px,#dedede 14px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:7px;color:#999;">lisad</span></div><div style="padding:5px 0;border-top:1.5px solid #000;text-align:center;"><span style="font-size:9px;font-weight:600;color:#000;">Aksessuaarid</span></div></div>
+    </div>
+  </div>
+
+  <!-- NEW PRODUCTS section -->
+  <div style="padding:14px 14px 0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <h2 style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#000;">Uued tooted</h2>
+      <a style="font-size:11px;color:#E8001D;font-weight:700;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;">Kõik →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1.5px solid #000;">
+      <div style="border-right:1.5px solid #000;overflow:hidden;"><div style="height:96px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 8px,#dedede 8px,#dedede 16px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:8px;color:#999;">toote foto</span></div><div style="padding:8px 10px;border-top:1.5px solid #000;"><p style="font-size:11px;font-weight:600;color:#000;margin-bottom:3px;line-height:1.3;">Seinapealne WC-pott</p><p style="font-size:13px;font-weight:700;color:#000;">349,00 €</p></div></div>
+      <div style="overflow:hidden;"><div style="height:96px;background:repeating-linear-gradient(135deg,#e8e8e8 0,#e8e8e8 8px,#dedede 8px,#dedede 16px);display:flex;align-items:center;justify-content:center;"><span style="font-family:monospace;font-size:8px;color:#999;">toote foto</span></div><div style="padding:8px 10px;border-top:1.5px solid #000;"><p style="font-size:11px;font-weight:600;color:#000;margin-bottom:3px;line-height:1.3;">Dušikomplekt vihmapeaga</p><p style="font-size:13px;font-weight:700;color:#000;">219,00 €</p></div></div>
+    </div>
+  </div>
+
+  <!-- BLACK FOOTER STRIP -->
+  <div style="position:absolute;bottom:0;left:0;right:0;height:36px;background:#000;display:flex;align-items:center;justify-content:center;gap:14px;">
+    <span style="font-size:11px;color:rgba(255,255,255,.8);">✓ Tasuta tarne üle 99€</span>
+    <span style="color:rgba(255,255,255,.25);">·</span>
+    <span style="font-size:11px;color:rgba(255,255,255,.8);">✓ 1–3 tööpäeva</span>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

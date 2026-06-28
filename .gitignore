@@ -31,6 +31,16 @@ pnpm-debug.log*
 
 # Medusa
 .cache/
+.medusa/
+
+# Next.js generated types
+next-env.d.ts
+
+# Claude Code launch config (machine-specific absolute paths)
+.claude/
+
+# Design handoff — keep the extracted folder as reference, ignore the zip
+Modern sanitaryware storefront redesign-handoff.zip
 
 # Migration data (CSV files contain cost prices — never commit)
 scripts/data/
