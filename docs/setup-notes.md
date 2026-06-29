@@ -20,7 +20,7 @@ Last updated: 2026-06-28.
 | Storefront homepage | ✅ Pixel-matched to design, real logo |
 | Medusa Admin panel | ✅ Renders + login works (see "Admin panel" below) |
 | Storefront homepage / PLP / PDP | ✅ Wired to the live Medusa catalog (real products, prices, images) |
-| Storefront checkout | ⏳ Not started (build in our design language) |
+| Cart (drawer) + checkout (/kassa) | ✅ Real Medusa cart; order placed end-to-end (system payment, manual fulfillment) |
 | Product migration from Magento | ✅ Done — 4,095 products, 139 categories, 26 vendors imported from SQL dump |
 | Product images | ✅ Matched locally (4,094 products) + served at `/static`; R2 upload pending |
 | `medusa build` (production) | ✅ Passes (backend + admin) |
@@ -201,6 +201,29 @@ from `localhost:9000/static/...` to `media.sansan.ee/...` (R2 env vars are
 already stubbed in `.env`).
 
 ---
+
+## Cart & checkout
+
+- **Cart** is a real Medusa cart. `lib/store-client.ts` (browser) wraps the
+  Store cart/checkout endpoints; `lib/cart-context.tsx` is a React provider
+  (wrapped in `app/layout.tsx`) that creates/persists the cart id in
+  `localStorage`, listens for the `sansan:add-to-cart` window event dispatched
+  by product cards / PDP, and drives the header badge + drawer.
+- **Checkout** (`/kassa`, `components/checkout/CheckoutClient.tsx`) collects
+  contact + address, lists/selects a shipping option, then on submit:
+  `updateCart` (email + address) → `addShippingMethod` → `initPaymentCollection`
+  → `initPaymentSession` → `completeCart`, then shows an order confirmation and
+  clears the cart. Verified end-to-end (order #1 placed).
+- **Backend prerequisites** were created once by
+  `src/scripts/checkout-setup.ts`: a stock location (linked to the sales channel
+  + `manual_manual` fulfillment), a fulfillment set with an **Eesti** service
+  zone, a flat-rate **"Kuller" 4.90 €** shipping option, and the
+  `pp_system_default` payment provider linked to the Eesti region.
+- **Payment is the demo system provider** (`pp_system_default`), which
+  auto-authorizes so orders complete without a redirect. The real **Montonio**
+  provider (module already scaffolded in `src/modules/montonio`) needs live
+  credentials + a region link to replace it; the checkout UI already labels the
+  method as Montonio.
 
 ## Storefront ↔ Medusa data layer
 

@@ -3,13 +3,14 @@
 import { useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { useCart } from "@/lib/cart-context"
 
 type CartItem = {
   id: string
   title: string
   brand: string
   quantity: number
-  unit_price: number
+  unit_price: number // cents
   thumbnail?: string
   variant_title?: string
 }
@@ -17,21 +18,28 @@ type CartItem = {
 type Props = {
   open: boolean
   onClose: () => void
-  items?: CartItem[]
-  total?: number
   freeShippingThreshold?: number
 }
 
 const FREE_SHIPPING_THRESHOLD_CENTS = 9900 // 99 €
+const toCents = (n: number | undefined | null) => Math.round((n ?? 0) * 100)
 
 export function CartDrawer({
   open,
   onClose,
-  items = [],
-  total = 0,
   freeShippingThreshold = FREE_SHIPPING_THRESHOLD_CENTS,
 }: Props) {
+  const { cart, total } = useCart()
   const drawerRef = useRef<HTMLDivElement>(null)
+  const items: CartItem[] = (cart?.items ?? []).map((it: any) => ({
+    id: it.id,
+    title: it.product_title || it.title,
+    brand: it.product?.metadata?.brand || "",
+    quantity: it.quantity,
+    unit_price: toCents(it.unit_price),
+    thumbnail: it.thumbnail || undefined,
+    variant_title: it.variant_title && it.variant_title !== "Standard" ? it.variant_title : undefined,
+  }))
   const hasFreeShipping = total >= freeShippingThreshold
   const progressPct = Math.min((total / freeShippingThreshold) * 100, 100)
 
@@ -193,16 +201,26 @@ function CartItem({ item }: { item: CartItem }) {
 }
 
 function QuantityControl({ itemId, quantity }: { itemId: string; quantity: number }) {
-  // Wire to cart context/store in implementation phase
+  const { setQuantity, loading } = useCart()
   return (
     <div className="flex items-center border border-[#DDD]">
-      <button className="w-[26px] h-[26px] bg-white text-[14px] text-[#0D0D0D] flex items-center justify-center hover:bg-[#f5f5f5]">
+      <button
+        onClick={() => setQuantity(itemId, quantity - 1)}
+        disabled={loading}
+        aria-label="Vähenda kogust"
+        className="w-[26px] h-[26px] bg-white text-[14px] text-[#0D0D0D] flex items-center justify-center hover:bg-[#f5f5f5] disabled:opacity-50"
+      >
         −
       </button>
       <span className="w-[30px] h-[26px] flex items-center justify-center text-[12px] font-bold border-x border-[#EEE]">
         {quantity}
       </span>
-      <button className="w-[26px] h-[26px] bg-white text-[14px] text-[#0D0D0D] flex items-center justify-center hover:bg-[#f5f5f5]">
+      <button
+        onClick={() => setQuantity(itemId, quantity + 1)}
+        disabled={loading}
+        aria-label="Suurenda kogust"
+        className="w-[26px] h-[26px] bg-white text-[14px] text-[#0D0D0D] flex items-center justify-center hover:bg-[#f5f5f5] disabled:opacity-50"
+      >
         +
       </button>
     </div>

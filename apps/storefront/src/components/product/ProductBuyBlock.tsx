@@ -9,9 +9,11 @@ export function ProductBuyBlock({ product }: { product: SampleProduct }) {
   const [qty, setQty] = useState(1)
 
   const addToCart = () => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && product.variant_id) {
       window.dispatchEvent(
-        new CustomEvent("sansan:add-to-cart", { detail: { product, size, qty } })
+        new CustomEvent("sansan:add-to-cart", {
+          detail: { variant_id: product.variant_id, qty },
+        })
       )
     }
   }

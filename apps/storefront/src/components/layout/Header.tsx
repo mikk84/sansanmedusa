@@ -7,6 +7,7 @@ import { AnnouncementBar } from "./AnnouncementBar"
 import { MegaMenu } from "./MegaMenu"
 import { CartDrawer } from "../cart/CartDrawer"
 import { SearchBar } from "../ui/SearchBar"
+import { useCart } from "@/lib/cart-context"
 
 const NAV_LINKS = [
   { label: "Vannid", href: "/kategooriad/vannid" },
@@ -18,13 +19,10 @@ const NAV_LINKS = [
   { label: "Saun", href: "/kategooriad/saun" },
 ]
 
-export function Header({ cartCount = 0, cartTotal = 0 }: {
-  cartCount?: number
-  cartTotal?: number
-}) {
+export function Header() {
   const [megaOpen, setMegaOpen] = useState(false)
-  const [cartOpen, setCartOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
+  const { count: cartCount, total: cartTotal, drawerOpen, openDrawer, closeDrawer } = useCart()
 
   return (
     <>
@@ -70,7 +68,7 @@ export function Header({ cartCount = 0, cartTotal = 0 }: {
 
             {/* Cart */}
             <button
-              onClick={() => setCartOpen(true)}
+              onClick={openDrawer}
               className="relative flex items-center gap-[7px] group"
               aria-label={`Ostukorv, ${cartCount} toodet`}
             >
@@ -146,7 +144,7 @@ export function Header({ cartCount = 0, cartTotal = 0 }: {
       )}
 
       {/* Cart drawer */}
-      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+      <CartDrawer open={drawerOpen} onClose={closeDrawer} />
     </>
   )
 }

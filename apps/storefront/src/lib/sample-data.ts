@@ -29,6 +29,7 @@ export type SampleProduct = {
   image_url?: string | null
   images?: string[]
   description?: string
+  variant_id?: string // default/first variant — needed to add to cart
 }
 
 export type SampleCategory = {

@@ -51,9 +51,10 @@ export function CatalogView({ category, products, subcategories, brands }: Props
   }, [products, sort, activeBrands])
 
   const addToCart = (p: SampleProduct) => {
-    // Wired to Medusa cart later; for now a lightweight confirmation.
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("sansan:add-to-cart", { detail: p }))
+    if (typeof window !== "undefined" && p.variant_id) {
+      window.dispatchEvent(
+        new CustomEvent("sansan:add-to-cart", { detail: { variant_id: p.variant_id, qty: 1 } })
+      )
     }
   }
 

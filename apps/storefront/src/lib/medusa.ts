@@ -54,6 +54,7 @@ function mapProduct(p: any): SampleProduct {
 
   return {
     id: p.id,
+    variant_id: variant.id,
     slug: p.handle,
     name: p.title,
     brand: md.brand || "",
