@@ -8,17 +8,28 @@ import {
 } from "@/lib/medusa"
 import type { SampleBrand } from "@/lib/sample-data"
 
+const PAGE_SIZE = 48
+
 export default async function CategoryPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ page?: string }>
 }) {
   const { slug } = await params
+  const { page: pageParam } = await searchParams
+  const page = Math.max(1, parseInt(pageParam || "1", 10) || 1)
 
   const catData = await getCategoryByHandle(slug)
   if (!catData) notFound()
 
-  const { products, count } = await getProductsByCategoryHandle(slug, 24)
+  const { products, count } = await getProductsByCategoryHandle(
+    slug,
+    PAGE_SIZE,
+    (page - 1) * PAGE_SIZE
+  )
+  const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE))
 
   // Derive brand facets from the products actually in this category.
   const brandCounts = new Map<string, number>()
@@ -50,6 +61,8 @@ export default async function CategoryPage({
         products={products}
         subcategories={catData.subcategories}
         brands={brands}
+        page={page}
+        totalPages={totalPages}
       />
     </>
   )

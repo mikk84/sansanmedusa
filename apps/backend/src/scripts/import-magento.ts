@@ -93,8 +93,11 @@ export default async function importMagento({ container }: ExecArgs) {
 
   // ── Attribute id lookup ───────────────────────────────────────────────────
   const attrRows = await q(
-    `SELECT attribute_id, attribute_code, frontend_label, backend_type, frontend_input, is_user_defined
-       FROM eav_attribute WHERE entity_type_id = ?`,
+    `SELECT a.attribute_id, a.attribute_code, a.frontend_label, a.backend_type,
+            a.frontend_input, a.is_user_defined, ca.is_visible_on_front
+       FROM eav_attribute a
+       LEFT JOIN catalog_eav_attribute ca ON ca.attribute_id = a.attribute_id
+      WHERE a.entity_type_id = ?`,
     [PRODUCT_ENTITY_TYPE]
   )
   const attrByCode = new Map<string, Row>()
@@ -414,6 +417,8 @@ function buildDisplayAttributes(
     const attr = attrByCode.get(code)
     const label = (attr?.frontend_label || "").trim()
     if (!label || raw === null || raw === undefined || raw === "") continue
+    // honour Magento's "Visible on Product View Page on Front-end" flag
+    if (Number(attr?.is_visible_on_front) !== 1) continue
 
     // Link-type HTML (installation guides etc.) — surface the href.
     const hrefMatch = typeof raw === "string" && /<a\s[^>]*href=["']([^"']+)["']/i.exec(raw)

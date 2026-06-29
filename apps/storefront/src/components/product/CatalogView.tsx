@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
+import Link from "next/link"
 import { ProductCardPLP } from "./ProductCardPLP"
 import type { SampleCategory, SampleProduct, SampleBrand } from "@/lib/sample-data"
 
@@ -9,6 +10,8 @@ type Props = {
   products: SampleProduct[]
   subcategories: { label: string; count: number }[]
   brands: SampleBrand[]
+  page?: number
+  totalPages?: number
 }
 
 type SortKey = "popular" | "price-asc" | "price-desc" | "new"
@@ -20,7 +23,7 @@ const SORT_LABELS: Record<SortKey, string> = {
   new: "Uued tooted",
 }
 
-export function CatalogView({ category, products, subcategories, brands }: Props) {
+export function CatalogView({ category, products, subcategories, brands, page = 1, totalPages = 1 }: Props) {
   const [activeSubs, setActiveSubs] = useState<string[]>(
     subcategories.length ? [subcategories[0].label] : []
   )
@@ -202,14 +205,58 @@ export function CatalogView({ category, products, subcategories, brands }: Props
         </div>
 
         {/* pagination */}
-        <div className="flex items-center mt-8 pt-4">
-          <div className="border border-[#DDD] px-3 py-2 text-[12px] text-[#888] cursor-pointer">←</div>
-          <div className="border border-[#E8001D] border-l-0 px-[13px] py-2 text-[12px] font-bold text-white bg-[#E8001D] cursor-pointer">1</div>
-          <div className="border border-[#DDD] border-l-0 px-[13px] py-2 text-[12px] text-[#0D0D0D] cursor-pointer hover:bg-[#F6F6F4]">2</div>
-          <div className="border border-[#DDD] border-l-0 px-[13px] py-2 text-[12px] text-[#0D0D0D] cursor-pointer hover:bg-[#F6F6F4]">3</div>
-          <div className="border border-[#DDD] border-l-0 px-3 py-2 text-[12px] text-[#888] cursor-pointer">→</div>
-        </div>
+        {totalPages > 1 && (
+          <div className="flex items-center mt-8 pt-4 flex-wrap">
+            <PageLink slug={category.slug} to={page - 1} disabled={page <= 1} label="←" />
+            {pageWindow(page, totalPages).map((n) =>
+              n === "…" ? (
+                <span key={`gap-${Math.random()}`} className="px-2 text-[12px] text-[#888]">…</span>
+              ) : (
+                <PageLink key={n} slug={category.slug} to={n as number} active={n === page} label={String(n)} />
+              )
+            )}
+            <PageLink slug={category.slug} to={page + 1} disabled={page >= totalPages} label="→" />
+          </div>
+        )}
       </div>
     </div>
+  )
+}
+
+// Compact page window: 1 … (p-1) p (p+1) … last
+function pageWindow(page: number, total: number): (number | "…")[] {
+  const set = new Set<number>([1, total, page, page - 1, page + 1])
+  const pages = [...set].filter((n) => n >= 1 && n <= total).sort((a, b) => a - b)
+  const out: (number | "…")[] = []
+  let prev = 0
+  for (const n of pages) {
+    if (n - prev > 1) out.push("…")
+    out.push(n)
+    prev = n
+  }
+  return out
+}
+
+function PageLink({
+  slug, to, label, active, disabled,
+}: {
+  slug: string
+  to: number
+  label: string
+  active?: boolean
+  disabled?: boolean
+}) {
+  const base =
+    "border border-[#DDD] border-l-0 first:border-l px-[13px] py-2 text-[12px]"
+  if (disabled) {
+    return <span className={`${base} text-[#ccc]`}>{label}</span>
+  }
+  if (active) {
+    return <span className={`${base} font-bold text-white bg-[#E8001D] border-[#E8001D]`}>{label}</span>
+  }
+  return (
+    <Link href={`/kategooriad/${slug}?page=${to}`} className={`${base} text-[#0D0D0D] hover:bg-[#F6F6F4]`}>
+      {label}
+    </Link>
   )
 }

@@ -135,7 +135,8 @@ export async function getCategoryByHandle(
 
 export async function getProductsByCategoryHandle(
   handle: string,
-  limit = 24
+  limit = 24,
+  offset = 0
 ): Promise<{ products: SampleProduct[]; count: number }> {
   const region_id = await getRegionId()
   // resolve category id from handle
@@ -145,7 +146,7 @@ export async function getProductsByCategoryHandle(
   const catId = cat.product_categories?.[0]?.id
   if (!catId) return { products: [], count: 0 }
   const data = await storeFetch<{ products: any[]; count: number }>(
-    `/store/products?limit=${limit}&region_id=${region_id}&category_id[]=${catId}&${PRODUCT_FIELDS}`
+    `/store/products?limit=${limit}&offset=${offset}&region_id=${region_id}&category_id[]=${catId}&${PRODUCT_FIELDS}`
   )
   return { products: data.products.map(mapProduct), count: data.count }
 }
