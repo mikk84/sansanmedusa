@@ -1,5 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MONTONIO_MODULE } from "../../../../modules/montonio"
+import { MontonioPaymentService } from "../../../../modules/montonio/service"
 
 /**
  * POST /hooks/payment/montonio
@@ -8,7 +9,7 @@ import { MONTONIO_MODULE } from "../../../../modules/montonio"
  * The payload is a signed JWT — we verify the signature before acting.
  */
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const montonioService = req.scope.resolve(MONTONIO_MODULE)
+  const montonioService = req.scope.resolve<MontonioPaymentService>(MONTONIO_MODULE)
 
   const { payment_token } = req.body as { payment_token?: string }
   if (!payment_token) {

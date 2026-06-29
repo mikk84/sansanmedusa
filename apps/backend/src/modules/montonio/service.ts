@@ -39,8 +39,8 @@ export class MontonioPaymentService extends AbstractPaymentProvider<MontonioOpti
     this.apiUrl = API_URLS[options.environment] || API_URLS.sandbox
   }
 
-  async initiatePayment(context: any) {
-    const { amount, currency_code, context: paymentContext } = context
+  async initiatePayment(input: any) {
+    const { amount, currency_code, context: paymentContext = {} } = input
 
     const orderToken = jwt.sign(
       {
@@ -67,21 +67,21 @@ export class MontonioPaymentService extends AbstractPaymentProvider<MontonioOpti
     }
   }
 
-  async authorizePayment(paymentSessionData: any, context: any) {
+  async authorizePayment(input: any) {
     // Montonio confirms via webhook (see /hooks/payment/montonio)
     // By the time we reach here, the webhook has already verified the JWT
     return {
       status: "authorized" as const,
-      data: paymentSessionData,
+      data: input.data,
     }
   }
 
-  async capturePayment(paymentSessionData: any) {
+  async capturePayment(input: any) {
     // Montonio captures at checkout; no separate capture step needed
-    return { ...paymentSessionData, status: "captured" }
+    return { data: { ...input.data, status: "captured" } }
   }
 
-  async refundPayment(paymentSessionData: any, refundAmount: number) {
+  async refundPayment(_input: any): Promise<any> {
     // Montonio refunds are manual via the Montonio merchant portal
     // TODO: implement Refund API when Montonio exposes it
     throw new MedusaError(
@@ -90,24 +90,46 @@ export class MontonioPaymentService extends AbstractPaymentProvider<MontonioOpti
     )
   }
 
-  async cancelPayment(paymentSessionData: any) {
-    return { ...paymentSessionData, status: "canceled" }
+  async cancelPayment(input: any) {
+    return { data: { ...input.data, status: "canceled" } }
   }
 
-  async getPaymentStatus(paymentSessionData: any) {
-    return paymentSessionData.status || "pending"
+  async getPaymentStatus(input: any) {
+    return { status: input.data?.status || "pending" }
   }
 
-  async retrievePayment(paymentSessionData: any) {
-    return paymentSessionData
+  async retrievePayment(input: any) {
+    return { data: input.data }
   }
 
-  async deletePayment(paymentSessionData: any) {
-    return paymentSessionData
+  async deletePayment(input: any) {
+    return { data: input.data }
   }
 
-  async updatePayment(context: any) {
-    return { id: context.id, data: context.data }
+  async updatePayment(input: any) {
+    return { data: input.data }
+  }
+
+  /**
+   * Map an incoming Montonio webhook to a Medusa payment action.
+   * Called by the payment module when a webhook hits the provider.
+   */
+  async getWebhookActionAndData(payload: any): Promise<any> {
+    try {
+      const token = payload?.data?.payment_token || payload?.data?.order_token
+      if (!token) return { action: "not_supported" }
+      const decoded: any = this.verifyWebhookJwt(token)
+      const isPaid = decoded?.payment_status === "PAID" || decoded?.status === "PAID"
+      return {
+        action: isPaid ? "authorized" : "not_supported",
+        data: {
+          session_id: decoded?.merchant_reference,
+          amount: Number(decoded?.grand_total ?? 0),
+        },
+      }
+    } catch {
+      return { action: "failed" }
+    }
   }
 
   /**

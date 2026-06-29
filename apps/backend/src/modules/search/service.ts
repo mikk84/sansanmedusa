@@ -1,5 +1,5 @@
 import { MedusaService } from "@medusajs/framework/utils"
-import { MeiliSearch } from "meilisearch"
+import { Meilisearch } from "meilisearch"
 
 type SearchOptions = {
   host: string
@@ -17,11 +17,11 @@ type SearchOptions = {
  * Products are indexed when created or updated via the product-indexed subscriber.
  */
 export class SearchModuleService extends MedusaService({}) {
-  private client: MeiliSearch
+  private client: Meilisearch
 
   constructor(container: any, options: SearchOptions) {
     super(...arguments)
-    this.client = new MeiliSearch({
+    this.client = new Meilisearch({
       host: options.host,
       apiKey: options.apiKey,
     })

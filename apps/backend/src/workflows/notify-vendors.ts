@@ -2,8 +2,10 @@ import {
   createWorkflow,
   createStep,
   StepResponse,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { VENDOR_MODULE } from "../modules/vendor"
+import { VendorModuleService } from "../modules/vendor/services/vendor-module-service"
 import { Resend } from "resend"
 
 type NotifyVendorsInput = {
@@ -36,7 +38,7 @@ type NotifyVendorsInput = {
 const groupItemsByVendor = createStep(
   "group-items-by-vendor",
   async (input: NotifyVendorsInput, { container }) => {
-    const vendorService = container.resolve(VENDOR_MODULE)
+    const vendorService = container.resolve<VendorModuleService>(VENDOR_MODULE)
 
     const vendorGroups = new Map<string, {
       vendor: any
@@ -115,7 +117,7 @@ export const notifyVendorsWorkflow = createWorkflow(
   (input: NotifyVendorsInput) => {
     const { vendorGroups } = groupItemsByVendor(input)
     const { results } = sendVendorEmails({ vendorGroups, order: input.order })
-    return { results }
+    return new WorkflowResponse({ results })
   }
 )
 
