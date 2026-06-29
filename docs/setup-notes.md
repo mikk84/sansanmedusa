@@ -19,11 +19,11 @@ Last updated: 2026-06-28.
 | All local services running | ✅ Postgres :5433, Redis :6379, Meilisearch :7700, API :9000, storefront :3000 |
 | Storefront homepage | ✅ Pixel-matched to design, real logo |
 | Medusa Admin panel | ✅ Renders + login works (see "Admin panel" below) |
-| Storefront PLP (catalog grid) | ✅ Built against sample data — `/kategooriad/[slug]` |
-| Storefront PDP (product detail) | ✅ Built against sample data — `/tooted/[slug]` |
+| Storefront homepage / PLP / PDP | ✅ Wired to the live Medusa catalog (real products, prices, images) |
 | Storefront checkout | ⏳ Not started (build in our design language) |
 | Product migration from Magento | ✅ Done — 4,095 products, 139 categories, 26 vendors imported from SQL dump |
-| Product images | ⏳ rsync ~9.8GB from server → match → R2 (see below) |
+| Product images | ✅ Matched locally (4,094 products) + served at `/static`; R2 upload pending |
+| `medusa build` (production) | ✅ Passes (backend + admin) |
 | Montonio / Resend live keys | ⏳ Placeholders in `.env` |
 
 ---
@@ -180,13 +180,43 @@ so it can't leak to the storefront. Took ~13s for the full run.
   DELETE FROM product CASCADE;`) — vendors are matched by name and safe to keep.
 - **mysql2** is a backend dependency purely for this importer.
 
-### Images (pending)
+### Images (matched locally; R2 pending)
 The dump holds only image **paths** (`/f/i/file.jpg`), not the binaries. The
-~9.8 GB of originals live on the server at
-`…/htdocs/media/catalog/product/` (excluding the regenerable `cache/`). Plan:
-`rsync` them into the gitignored `media/` folder, match to products by the
-stored paths, then push to Cloudflare R2 for production. The original 21 MB CSV
-export sits in `uploads/` (gitignored) as a fallback reference.
+~9.8 GB of originals were `rsync`'d from the server (excluding the regenerable
+`cache/`) into the gitignored `media/` folder. Then:
+
+- `apps/backend/src/scripts/attach-images.ts` (run via `medusa exec`) reads each
+  product's `magento_id`, looks up its base image + media gallery in MariaDB,
+  verifies the local file, and sets the product's `thumbnail` + `images` to
+  `${MEDUSA_BACKEND_URL}/static/catalog/product<path>`. Result: **4,094 / 4,095**
+  products have images (1 had none in Magento), 0 missing files.
+- Serving: `media/catalog` is symlinked into `apps/backend/static/catalog`
+  (gitignored) and the local file module serves it at `/static`. **No 9.8 GB
+  copy** — one source of truth.
+
+The original 21 MB CSV export sits in `uploads/` (gitignored) as a fallback.
+
+**Production TODO:** upload `media/` to Cloudflare R2 and switch the image URLs
+from `localhost:9000/static/...` to `media.sansan.ee/...` (R2 env vars are
+already stubbed in `.env`).
+
+---
+
+## Storefront ↔ Medusa data layer
+
+The homepage, PLP (`/kategooriad/[slug]`), and PDP (`/tooted/[slug]`) fetch from
+the **Medusa Store API** via `apps/storefront/src/lib/medusa.ts` (server-side
+`fetch`, publishable key in `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`). Notes:
+
+- A **region** (Eesti / EUR) must exist for `calculated_price` to resolve —
+  created via `POST /admin/regions`. Without it the store products endpoint
+  returns no prices.
+- `lib/medusa.ts` maps Store API responses to the same shapes the components
+  already used (`sample-data.ts` types), converting Medusa's major-unit prices
+  to **cents** so the existing components (which divide by 100) work unchanged.
+- `sample-data.ts` is retained for its types and as an offline fallback.
+- Image hosts must be allow-listed in `next.config.ts` (`localhost:9000` for
+  local; add the R2 domain for production).
 
 ---
 

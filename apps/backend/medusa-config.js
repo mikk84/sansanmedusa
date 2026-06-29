@@ -20,5 +20,24 @@ module.exports = defineConfig({
   modules: [
     // Custom vendor module — creates the 'vendor' table in postgres
     { resolve: "./src/modules/vendor" },
+    // Local file storage — serves files from ./static at /static.
+    // The migrated Magento images are symlinked in at static/catalog
+    // (apps/backend/static/catalog → ../../media/catalog). Production will
+    // swap this for the S3/R2 provider.
+    {
+      resolve: "@medusajs/medusa/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/file-local",
+            id: "local",
+            options: {
+              upload_dir: "static",
+              backend_url: `${process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"}/static`,
+            },
+          },
+        ],
+      },
+    },
   ],
 })

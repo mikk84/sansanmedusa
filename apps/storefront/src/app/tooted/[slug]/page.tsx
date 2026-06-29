@@ -1,12 +1,9 @@
 import Link from "next/link"
+import Image from "next/image"
 import { notFound } from "next/navigation"
 import { Header } from "@/components/layout/Header"
 import { ProductBuyBlock } from "@/components/product/ProductBuyBlock"
-import { getProductBySlug, getCategoryBySlug, PRODUCTS } from "@/lib/sample-data"
-
-export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }))
-}
+import { getProductByHandle } from "@/lib/medusa"
 
 export default async function ProductPage({
   params,
@@ -14,13 +11,14 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const product = getProductBySlug(slug)
+  const product = await getProductByHandle(slug)
   if (!product) notFound()
 
-  const category = getCategoryBySlug(product.category)
+  const category = product.category ? { slug: product.category, label: product.category } : null
   const hasDiscount = product.special_price && product.special_price < product.price
   const savings = hasDiscount ? product.price - product.special_price! : 0
   const fullStars = Math.floor(product.rating ?? 0)
+  const gallery = (product.images && product.images.length ? product.images : [product.image_url]).filter(Boolean) as string[]
 
   return (
     <>
@@ -46,22 +44,42 @@ export default async function ProductPage({
       <div className="flex flex-col lg:flex-row">
         {/* GALLERY */}
         <div className="lg:w-[52%] lg:border-r border-[#EEE] p-[26px] flex flex-col gap-[14px]">
-          <div className="img-placeholder flex-1 min-h-[360px] border border-[#EEE] relative flex items-center justify-center">
+          <div className="flex-1 min-h-[360px] border border-[#EEE] relative flex items-center justify-center bg-white">
+            {gallery[0] ? (
+              <Image
+                src={gallery[0]}
+                alt={product.name}
+                fill
+                className="object-contain p-6"
+                sizes="(max-width: 1024px) 100vw, 52vw"
+                priority
+              />
+            ) : (
+              <div className="img-placeholder absolute inset-0" />
+            )}
             {hasDiscount && (
-              <span className="absolute top-[14px] left-[14px] bg-[#E8001D] text-white text-[11px] font-bold px-[10px] py-[5px]">
+              <span className="absolute top-[14px] left-[14px] bg-[#E8001D] text-white text-[11px] font-bold px-[10px] py-[5px] z-10">
                 ERIHIND −{Math.round((savings / product.price) * 100)}%
               </span>
             )}
           </div>
-          <div className="flex gap-[11px] flex-shrink-0">
-            <div className="img-placeholder w-20 h-20 border-2 border-[#E8001D]" />
-            <div className="img-placeholder w-20 h-20 border border-[#DDD]" />
-            <div className="img-placeholder w-20 h-20 border border-[#DDD]" />
-            <div className="img-placeholder w-20 h-20 border border-[#DDD]" />
-            <div className="w-20 h-20 border border-[#DDD] flex items-center justify-center">
-              <span className="text-[13px] font-semibold text-[#888]">+3</span>
+          {gallery.length > 1 && (
+            <div className="flex gap-[11px] flex-shrink-0 flex-wrap">
+              {gallery.slice(0, 5).map((src, i) => (
+                <div
+                  key={src}
+                  className={`relative w-20 h-20 border ${i === 0 ? "border-2 border-[#E8001D]" : "border-[#DDD]"}`}
+                >
+                  <Image src={src} alt="" fill className="object-contain p-1" sizes="80px" />
+                </div>
+              ))}
+              {gallery.length > 5 && (
+                <div className="w-20 h-20 border border-[#DDD] flex items-center justify-center">
+                  <span className="text-[13px] font-semibold text-[#888]">+{gallery.length - 5}</span>
+                </div>
+              )}
             </div>
-          </div>
+          )}
         </div>
 
         {/* INFO */}

@@ -1,26 +1,16 @@
-import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/layout/Header"
 import { ProductCard } from "@/components/product/ProductCard"
+import { getFeaturedProducts, getCategories } from "@/lib/medusa"
 
-const CATEGORIES = [
-  { slug: "vannid", label: "Vannid", count: 124 },
-  { slug: "dusinurgad", label: "Dušinurgad", count: 98 },
-  { slug: "wc-potid", label: "WC-potid", count: 56 },
-  { slug: "segistid", label: "Segistid", count: 142 },
-  { slug: "valamud", label: "Valamud", count: 87 },
-  { slug: "mooebel", label: "Vannitoamööbel", count: 63 },
-]
+export default async function HomePage() {
+  const [allCategories, featured] = await Promise.all([
+    getCategories(),
+    getFeaturedProducts(8),
+  ])
+  const CATEGORIES = allCategories.slice(0, 6)
+  const FEATURED_PRODUCTS = featured
 
-// In production these come from Medusa API / Meilisearch
-const FEATURED_PRODUCTS = [
-  { id: "1", slug: "vitra-s50-wc-komplekt", name: "S50 seinapealne WC-komplekt", brand: "VitrA", price: 48900, special_price: 39900 },
-  { id: "2", slug: "hansgrohe-vernis-blend", name: "Vernis Blend valamusegisti", brand: "Hansgrohe", price: 12900 },
-  { id: "3", slug: "ravak-chrome-dusisein-90", name: "Chrome dušisein 90 cm", brand: "Ravak", price: 27900, is_new: true },
-  { id: "4", slug: "duravit-dcode-ii-wc-pott", name: "D-Code II seinapealne WC-pott", brand: "Duravit", price: 34900 },
-]
-
-export default function HomePage() {
   return (
     <>
       <Header />
@@ -79,7 +69,7 @@ export default function HomePage() {
                   <p className="text-[12px] font-semibold text-[#0D0D0D] group-hover:text-[#E8001D] transition-colors">
                     {cat.label}
                   </p>
-                  <p className="text-[10px] text-[#999]">{cat.count} toodet</p>
+                  {cat.count > 0 && <p className="text-[10px] text-[#999]">{cat.count} toodet</p>}
                 </div>
               </Link>
             ))}

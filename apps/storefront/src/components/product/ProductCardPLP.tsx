@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import type { SampleProduct } from "@/lib/sample-data"
 
 type Props = {
@@ -19,8 +20,18 @@ export function ProductCardPLP({ product, onAddToCart }: Props) {
 
   return (
     <div className="border border-[#EAEAEA] flex flex-col group hover:shadow-md transition-shadow">
-      <Link href={`/tooted/${product.slug}`} className="relative aspect-[4/3] block bg-[#f8f8f8]">
-        <div className="img-placeholder w-full h-full" />
+      <Link href={`/tooted/${product.slug}`} className="relative aspect-[4/3] block bg-white">
+        {product.image_url ? (
+          <Image
+            src={product.image_url}
+            alt={product.name}
+            fill
+            className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 640px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="img-placeholder w-full h-full" />
+        )}
         {product.badge === "new" && (
           <span className="absolute top-[9px] left-[9px] bg-[#E8001D] text-white text-[9px] font-bold px-[6px] py-[3px]">
             UUS

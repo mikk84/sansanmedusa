@@ -25,6 +25,10 @@ export type SampleProduct = {
   sizes?: string[]
   rating?: number
   review_count?: number
+  // Populated when sourced from Medusa (sample data leaves these undefined)
+  image_url?: string | null
+  images?: string[]
+  description?: string
 }
 
 export type SampleCategory = {

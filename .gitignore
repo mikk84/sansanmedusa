@@ -48,3 +48,6 @@ uploads/
 
 # Magento product images (~10GB) — staged locally, then pushed to Cloudflare R2
 media/
+
+# Local image serving — symlink to the gitignored media/ folder
+apps/backend/static/
