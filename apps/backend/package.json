@@ -22,6 +22,7 @@
     "@medusajs/payment-stripe": "^2.17.1",
     "jsonwebtoken": "^9.0.2",
     "meilisearch": "^0.58.0",
+    "mysql2": "3.11.5",
     "pg": "^8.16.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",

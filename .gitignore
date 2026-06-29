@@ -45,3 +45,6 @@ Modern sanitaryware storefront redesign-handoff.zip
 # Migration data (CSV / SQL dumps contain cost prices — never commit)
 scripts/data/
 uploads/
+
+# Magento product images (~10GB) — staged locally, then pushed to Cloudflare R2
+media/

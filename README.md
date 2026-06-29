@@ -107,13 +107,20 @@ pnpm dev
 
 ## Importing products from Magento
 
-See [docs/product-migration.md](docs/product-migration.md) for the full guide.
+The catalog is imported from a **full Magento 1.9 SQL dump** loaded into a
+throwaway MariaDB container, then read by a Medusa `exec` script. See
+[docs/product-migration.md](docs/product-migration.md) for the full guide.
 
 ```bash
-# Quick run (backend must be running; the script logs in with the admin
-# credentials from .env — MEDUSA_ADMIN_EMAIL / MEDUSA_ADMIN_PASSWORD):
-cp /path/to/catalog_product.csv scripts/data/catalog_product.csv
-pnpm migrate
+# 1. load the gzipped dump into a disposable MariaDB
+docker run -d --name sansan-magento-import \
+  -e MARIADB_ROOT_PASSWORD=root -e MARIADB_DATABASE=magento \
+  -p 3307:3306 mariadb:11.4
+gzip -dc scripts/data/magento.sql.gz \
+  | docker exec -i sansan-magento-import mariadb -uroot -proot magento
+
+# 2. run the importer (4,095 products, 139 categories, 26 vendors)
+cd apps/backend && pnpm exec medusa exec ./src/scripts/import-magento.ts
 ```
 
 ---

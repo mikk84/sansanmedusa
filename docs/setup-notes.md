@@ -22,7 +22,8 @@ Last updated: 2026-06-28.
 | Storefront PLP (catalog grid) | ✅ Built against sample data — `/kategooriad/[slug]` |
 | Storefront PDP (product detail) | ✅ Built against sample data — `/tooted/[slug]` |
 | Storefront checkout | ⏳ Not started (build in our design language) |
-| Product migration from Magento | ⏳ Switching source from CSV → full SQL dump (see below) |
+| Product migration from Magento | ✅ Done — 4,095 products, 139 categories, 26 vendors imported from SQL dump |
+| Product images | ⏳ rsync ~9.8GB from server → match → R2 (see below) |
 | Montonio / Resend live keys | ⏳ Placeholders in `.env` |
 
 ---
@@ -144,24 +145,48 @@ component props already match the eventual API shape.
 
 ---
 
-## Product migration: CSV → full SQL dump
+## Product migration (done) — Magento SQL dump → Medusa
 
-Plan changed from parsing the flat CSV to importing a **full Magento 1.9 MySQL
-dump** (placed at `scripts/data/*.sql.gz`, gitignored). The SQL source preserves
-the EAV structure — attribute sets, attribute groups, and option labels — that a
-flat CSV flattens or drops.
+The catalog was imported from a **full Magento 1.9 MariaDB dump** rather than the
+flat CSV — the SQL source preserves the EAV structure (attribute sets, option
+labels, category tree) that a CSV flattens. Full step-by-step in
+[product-migration.md](product-migration.md). Summary:
 
-Intended flow when the dump lands:
-1. Load the dump into a throwaway MariaDB container.
-2. Read the Magento EAV catalog tables (`catalog_product_entity*`,
-   `catalog_category_entity*`, `eav_attribute*`, `catalog_eav_attribute`,
-   `cataloginventory_stock_item`, etc.).
-3. Rewrite `scripts/migrate-products.ts` to query the DB instead of CSV.
-4. Upsert vendors → categories → products into Medusa via the Admin API
-   (auth via `MEDUSA_ADMIN_EMAIL` / `MEDUSA_ADMIN_PASSWORD`).
+1. Load the gzipped dump (`scripts/data/*.sql.gz`, gitignored) into a throwaway
+   MariaDB 11.4 container (`sansan-magento-import`, host port **3307**).
+2. Run the importer: `pnpm exec medusa exec ./src/scripts/import-magento.ts`.
+   It reads the Magento EAV tables via `mysql2` and creates everything through
+   Medusa's native workflows (`createProductsWorkflow`,
+   `createProductCategoriesWorkflow`) + the vendor module service.
 
-The original 21 MB CSV export the client first provided sits in `uploads/`
-(gitignored) as a fallback reference.
+**Result:** 4,095 enabled products (published), 139 categories (full parent
+tree), 26 vendors (20 via_terminal / 6 dropship), ~14k category links. Each
+product carries metadata: brand (`tootja`), vendor + vendor SKU, attribute set,
+stock label, and all non-system attribute values — **purchase `cost` excluded**
+so it can't leak to the storefront. Took ~13s for the full run.
+
+### Gotchas hit during migration
+- **Estonian characters dropped in descriptions.** Magento's WYSIWYG stored
+  accented chars as HTML entities (`Kaubam&auml;rgist`). The first `stripHtml`
+  blanked *all* entities, deleting ä/ö/ü (titles were fine — plain UTF-8). Fixed
+  with a real entity **decoder** (named + numeric + `&shy;`/zero-width removal)
+  that also strips Magento `{{media}}` directives. Re-import was clean.
+- **Duplicate category handles.** The Magento tree reuses names (e.g.
+  "Lisatarvikud" under several parents); Medusa requires unique handles, so the
+  importer appends a numeric suffix on collision.
+- **Re-running isn't idempotent for categories** (it would create suffixed
+  duplicates). To re-import, clear products + categories first
+  (`DELETE FROM product_category_product; DELETE FROM product_category;
+  DELETE FROM product CASCADE;`) — vendors are matched by name and safe to keep.
+- **mysql2** is a backend dependency purely for this importer.
+
+### Images (pending)
+The dump holds only image **paths** (`/f/i/file.jpg`), not the binaries. The
+~9.8 GB of originals live on the server at
+`…/htdocs/media/catalog/product/` (excluding the regenerable `cache/`). Plan:
+`rsync` them into the gitignored `media/` folder, match to products by the
+stored paths, then push to Cloudflare R2 for production. The original 21 MB CSV
+export sits in `uploads/` (gitignored) as a fallback reference.
 
 ---
 
