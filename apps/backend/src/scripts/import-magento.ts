@@ -93,7 +93,7 @@ export default async function importMagento({ container }: ExecArgs) {
 
   // ── Attribute id lookup ───────────────────────────────────────────────────
   const attrRows = await q(
-    `SELECT attribute_id, attribute_code, backend_type, frontend_input, is_user_defined
+    `SELECT attribute_id, attribute_code, frontend_label, backend_type, frontend_input, is_user_defined
        FROM eav_attribute WHERE entity_type_id = ?`,
     [PRODUCT_ENTITY_TYPE]
   )
@@ -313,6 +313,8 @@ export default async function importMagento({ container }: ExecArgs) {
       if (typeof val === "string" && val.length > 800) continue
       metadata[code] = val
     }
+    // Display-ready, labelled, fully-resolved attribute list for the PDP.
+    metadata.attributes = buildDisplayAttributes(bag, attrByCode, optionLabel)
 
     const catIds = [...(productCats.get(p.entity_id) || [])]
 
@@ -377,6 +379,66 @@ const SYSTEM_ATTRS = new Set<string>([
   "country_of_manufacture", "enable_googlecheckout", "page_layout",
   "custom_layout_update", "gift_wrapping_available", "gift_wrapping_price",
 ])
+
+// Attributes excluded from the PDP display list (internal / pricing / SEO /
+// supplier). Note: `tootja` (Kaubamärk) and `weight` (Transpordikaal) are kept.
+const DISPLAY_SKIP = new Set<string>([
+  "name", "url_key", "url_path", "description", "short_description", "price",
+  "special_price", "status", "custom_stock_status", "image", "small_image",
+  "thumbnail", "media_gallery", "meta_title", "meta_description", "meta_keyword",
+  "options_container", "custom_design", "gift_message_available", "tax_class_id",
+  "visibility", "cost", "hankija", "hankija_kood",
+  "msrp", "msrp_enabled", "msrp_display_actual_price_type", "is_recurring",
+  "is_imported", "hide_default_stock_status", "custom_stock_status_quantity_based",
+  "news_from_date", "news_to_date", "special_from_date", "special_to_date",
+  "country_of_manufacture", "enable_googlecheckout", "page_layout",
+  "custom_layout_update", "gift_wrapping_available", "gift_wrapping_price",
+])
+
+type DisplayAttr = { label: string; value: string; url?: string }
+
+/**
+ * Build the labelled, resolved attribute list shown on the PDP:
+ *  - multiselect values (comma-separated option ids in a text column) → labels
+ *  - link-type HTML values (e.g. Paigaldusjuhend) → { value, url }
+ *  - plain HTML stripped to text
+ */
+function buildDisplayAttributes(
+  bag: Record<string, any>,
+  attrByCode: Map<string, Row>,
+  optionLabel: Map<number, string>
+): DisplayAttr[] {
+  const out: DisplayAttr[] = []
+  for (const [code, raw] of Object.entries(bag)) {
+    if (DISPLAY_SKIP.has(code)) continue
+    const attr = attrByCode.get(code)
+    const label = (attr?.frontend_label || "").trim()
+    if (!label || raw === null || raw === undefined || raw === "") continue
+
+    // Link-type HTML (installation guides etc.) — surface the href.
+    const hrefMatch = typeof raw === "string" && /<a\s[^>]*href=["']([^"']+)["']/i.exec(raw)
+    if (hrefMatch) {
+      out.push({ label, value: "Vaata juhendit", url: hrefMatch[1] })
+      continue
+    }
+
+    let value = String(raw)
+    if (attr?.frontend_input === "multiselect" && /^[\d,]+$/.test(value)) {
+      value = value
+        .split(",")
+        .map((id) => optionLabel.get(Number(id.trim())) || "")
+        .filter(Boolean)
+        .join(", ")
+    }
+    value = value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()
+    // trim noisy decimal zeros, e.g. "40.0000" → "40", "1.5000" → "1.5"
+    if (/^\d+\.\d+$/.test(value)) value = String(parseFloat(value))
+    if (!value) continue
+    out.push({ label, value })
+  }
+  // stable, readable order
+  return out.sort((a, b) => a.label.localeCompare(b.label, "et"))
+}
 
 function toAmount(v: any): number | null {
   if (v === null || v === undefined || v === "") return null

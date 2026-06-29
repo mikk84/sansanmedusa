@@ -68,7 +68,7 @@ function mapProduct(p: any): SampleProduct {
     short_description: p.subtitle || "",
     image_url: p.thumbnail || null,
     images: (p.images || []).map((i: any) => i.url),
-    attributes: buildAttributes(md),
+    attributes: Array.isArray(md.attributes) ? md.attributes : buildAttributes(md),
     description: p.description || "",
     sizes: [],
   } as SampleProduct & { image_url: string | null; images: string[]; description: string }

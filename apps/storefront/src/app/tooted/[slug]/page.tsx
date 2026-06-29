@@ -1,8 +1,8 @@
 import Link from "next/link"
-import Image from "next/image"
 import { notFound } from "next/navigation"
 import { Header } from "@/components/layout/Header"
 import { ProductBuyBlock } from "@/components/product/ProductBuyBlock"
+import { ProductGallery } from "@/components/product/ProductGallery"
 import { getProductByHandle } from "@/lib/medusa"
 
 export default async function ProductPage({
@@ -43,43 +43,12 @@ export default async function ProductPage({
       {/* MAIN: gallery 52% / info 48% */}
       <div className="flex flex-col lg:flex-row">
         {/* GALLERY */}
-        <div className="lg:w-[52%] lg:border-r border-[#EEE] p-[26px] flex flex-col gap-[14px]">
-          <div className="flex-1 min-h-[360px] border border-[#EEE] relative flex items-center justify-center bg-white">
-            {gallery[0] ? (
-              <Image
-                src={gallery[0]}
-                alt={product.name}
-                fill
-                className="object-contain p-6"
-                sizes="(max-width: 1024px) 100vw, 52vw"
-                priority
-              />
-            ) : (
-              <div className="img-placeholder absolute inset-0" />
-            )}
-            {hasDiscount && (
-              <span className="absolute top-[14px] left-[14px] bg-[#E8001D] text-white text-[11px] font-bold px-[10px] py-[5px] z-10">
-                ERIHIND −{Math.round((savings / product.price) * 100)}%
-              </span>
-            )}
-          </div>
-          {gallery.length > 1 && (
-            <div className="flex gap-[11px] flex-shrink-0 flex-wrap">
-              {gallery.slice(0, 5).map((src, i) => (
-                <div
-                  key={src}
-                  className={`relative w-20 h-20 border ${i === 0 ? "border-2 border-[#E8001D]" : "border-[#DDD]"}`}
-                >
-                  <Image src={src} alt="" fill className="object-contain p-1" sizes="80px" />
-                </div>
-              ))}
-              {gallery.length > 5 && (
-                <div className="w-20 h-20 border border-[#DDD] flex items-center justify-center">
-                  <span className="text-[13px] font-semibold text-[#888]">+{gallery.length - 5}</span>
-                </div>
-              )}
-            </div>
-          )}
+        <div className="lg:w-[52%] lg:border-r border-[#EEE] p-[26px]">
+          <ProductGallery
+            images={gallery}
+            alt={product.name}
+            discountBadge={hasDiscount ? `ERIHIND −${Math.round((savings / product.price) * 100)}%` : null}
+          />
         </div>
 
         {/* INFO */}
@@ -137,24 +106,50 @@ export default async function ProductPage({
           <p className="text-[13px] leading-[1.6] text-[#555] mb-4">{product.short_description}</p>
 
           {/* key attributes */}
-          <div className="border border-[#ECECEC] mb-[18px]">
-            <div className="grid grid-cols-2">
-              {product.attributes.map((attr, i) => (
-                <div
-                  key={attr.label}
-                  className={`flex justify-between gap-2 p-[9px_13px] border-b border-[#F0F0F0] ${i % 2 === 0 ? "border-r" : ""}`}
-                >
-                  <span className="text-[11px] text-[#999]">{attr.label}</span>
-                  <span className="text-[11px] font-semibold text-[#0D0D0D] text-right">{attr.value}</span>
-                </div>
-              ))}
+          {product.attributes.length > 0 && (
+            <div className="border border-[#ECECEC] mb-[18px]">
+              <div className="grid grid-cols-2">
+                {product.attributes.map((attr, i) => (
+                  <div
+                    key={`${attr.label}-${i}`}
+                    className={`flex justify-between gap-2 p-[9px_13px] border-b border-[#F0F0F0] ${i % 2 === 0 ? "border-r" : ""}`}
+                  >
+                    <span className="text-[11px] text-[#999]">{attr.label}</span>
+                    {attr.url ? (
+                      <a
+                        href={attr.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] font-semibold text-[#E8001D] text-right underline"
+                      >
+                        {attr.value} →
+                      </a>
+                    ) : (
+                      <span className="text-[11px] font-semibold text-[#0D0D0D] text-right">{attr.value}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* size + qty + CTA (interactive) */}
           <ProductBuyBlock product={product} />
         </div>
       </div>
+
+      {/* LONG DESCRIPTION */}
+      {product.description && (
+        <section className="border-t border-[#EEE] px-[--page-px] py-10"
+          style={{ paddingLeft: "var(--page-px)", paddingRight: "var(--page-px)" }}>
+          <h2 className="text-[12px] font-bold tracking-[.12em] uppercase text-[#0D0D0D] mb-4">
+            Toote kirjeldus
+          </h2>
+          <div className="max-w-[760px] text-[14px] leading-[1.7] text-[#444] whitespace-pre-line">
+            {product.description}
+          </div>
+        </section>
+      )}
     </>
   )
 }

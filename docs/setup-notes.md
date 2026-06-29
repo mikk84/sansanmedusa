@@ -202,6 +202,26 @@ already stubbed in `.env`).
 
 ---
 
+## Product detail (PDP) notes
+
+- **Gallery** is interactive (`ProductGallery.tsx`, client) — base image + media
+  gallery, click a thumbnail to swap the main image.
+- **Attributes** are imported as a fully-resolved, labelled list
+  (`metadata.attributes` = `[{ label, value, url? }]`) by `import-magento.ts`:
+  multiselect option ids are resolved to labels (e.g. *Mõõt: 80×80, 90×90…*),
+  HTML link attributes like *Paigaldusjuhend* surface the PDF href, and decimals
+  are trimmed (`40.0000` → `40`). Supplier/cost/SEO/system codes are excluded;
+  `tootja` shows as **Kaubamärk**. The PDP renders the whole list.
+- **Long description** (Magento `description`) is shown in a "Toote kirjeldus"
+  section below the fold.
+- **No configurable products exist in the Magento export** — all 6,324 are
+  `simple` (verified: `catalog_product_super_link` is empty). Products that look
+  configurable on the old site (e.g. *Dušinurk Duschy Square*) store their size
+  options as slash-separated text in the *Mõõdud* / *Mõõt* attributes with a
+  single SKU + price. They surface as attributes, not selectable variants.
+  Turning them into real Medusa variants would require restructuring the source
+  data (split per size, assign SKUs/prices) — out of scope for the migration.
+
 ## Cart & checkout
 
 - **Cart** is a real Medusa cart. `lib/store-client.ts` (browser) wraps the

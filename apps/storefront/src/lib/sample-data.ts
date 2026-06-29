@@ -21,7 +21,7 @@ export type SampleProduct = {
   delivery: string
   category: string // category slug
   short_description: string
-  attributes: { label: string; value: string }[]
+  attributes: { label: string; value: string; url?: string }[]
   sizes?: string[]
   rating?: number
   review_count?: number
