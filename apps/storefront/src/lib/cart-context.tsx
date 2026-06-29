@@ -14,7 +14,9 @@ import {
   addLineItem,
   updateLineItem,
   deleteLineItem,
+  addConfiguredLine,
   type StoreCart,
+  type ConfigSelection,
 } from "./store-client"
 
 const CART_ID_KEY = "sansan_cart_id"
@@ -28,6 +30,7 @@ type CartContextValue = {
   openDrawer: () => void
   closeDrawer: () => void
   addVariant: (variantId: string, quantity?: number) => Promise<void>
+  addConfigured: (variantId: string, quantity: number, selections: ConfigSelection[]) => Promise<void>
   setQuantity: (itemId: string, quantity: number) => Promise<void>
   removeItem: (itemId: string) => Promise<void>
   refresh: () => Promise<void>
@@ -85,6 +88,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         const id = await ensureCart()
         const updated = await addLineItem(id, variantId, quantity)
         setCart(updated)
+        setDrawerOpen(true)
+      } finally {
+        setLoading(false)
+      }
+    },
+    [ensureCart]
+  )
+
+  const addConfigured = useCallback(
+    async (variantId: string, quantity: number, selections: ConfigSelection[]) => {
+      setLoading(true)
+      try {
+        const id = await ensureCart()
+        const updated = await addConfiguredLine(id, variantId, quantity, selections)
+        if (updated) setCart(updated)
         setDrawerOpen(true)
       } finally {
         setLoading(false)
@@ -162,6 +180,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         openDrawer: () => setDrawerOpen(true),
         closeDrawer: () => setDrawerOpen(false),
         addVariant,
+        addConfigured,
         setQuantity,
         removeItem,
         refresh,

@@ -214,13 +214,28 @@ already stubbed in `.env`).
   `tootja` shows as **Kaubamärk**. The PDP renders the whole list.
 - **Long description** (Magento `description`) is shown in a "Toote kirjeldus"
   section below the fold.
-- **No configurable products exist in the Magento export** — all 6,324 are
-  `simple` (verified: `catalog_product_super_link` is empty). Products that look
-  configurable on the old site (e.g. *Dušinurk Duschy Square*) store their size
-  options as slash-separated text in the *Mõõdud* / *Mõõt* attributes with a
-  single SKU + price. They surface as attributes, not selectable variants.
-  Turning them into real Medusa variants would require restructuring the source
-  data (split per size, assign SKUs/prices) — out of scope for the migration.
+- **Configurability comes from Magento "custom options", not configurable
+  products.** No configurable products exist (`catalog_product_super_link` is
+  empty), but **1,723 simple products carry custom options** (drop_down, radio,
+  checkbox, field, area) with additive price deltas — that's how SanSan made
+  products configurable. These are imported into `metadata.custom_options` and
+  driven by a PDP **configurator** (see below). Sizes that are *only* in the
+  *Mõõdud* text attribute (no custom option) still display as plain attributes.
+- **Attribute frontend-visibility is honoured** — only attributes flagged
+  `is_visible_on_front=1` in Magento (`catalog_eav_attribute`) are imported into
+  `metadata.attributes` (e.g. Transpordikaal / Mõõt cm are hidden).
+
+### Configurator (custom options)
+- Import → `metadata.custom_options = [{ id, title, type, required, price,
+  price_type, values:[{id,title,price,price_type}] }]`.
+- PDP `ProductBuyBlock` renders selects/radios/checkboxes/text fields, computes
+  a **live price** (base + deltas), and validates required options.
+- Add-to-cart hits a custom store route **`POST /store/carts/:id/configure`**
+  which recomputes the price **server-side** (anti-tamper) from the product
+  metadata and adds a line item with a custom `unit_price` (via
+  `addToCartWorkflow`, which keeps custom prices through cart refresh) plus the
+  chosen options in `configured_options` metadata. The cart drawer + order show
+  the selected options. Verified: Duschy Square 553 + 38 + 14 + 23 = **628 €**.
 
 ## Cart & checkout
 

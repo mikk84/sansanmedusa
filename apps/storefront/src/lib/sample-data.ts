@@ -30,6 +30,24 @@ export type SampleProduct = {
   images?: string[]
   description?: string
   variant_id?: string // default/first variant — needed to add to cart
+  custom_options?: CustomOption[] // Magento configurable options
+}
+
+export type CustomOptionValue = {
+  id: number
+  title: string
+  price: number // delta in EUR (major units)
+  price_type: "fixed" | "percent"
+}
+
+export type CustomOption = {
+  id: number
+  title: string
+  type: "drop_down" | "radio" | "checkbox" | "multiple" | "field" | "area" | "file"
+  required: boolean
+  price: number // option-level delta (field/area)
+  price_type: "fixed" | "percent"
+  values: CustomOptionValue[]
 }
 
 export type SampleCategory = {

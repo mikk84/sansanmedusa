@@ -69,6 +69,7 @@ function mapProduct(p: any): SampleProduct {
     image_url: p.thumbnail || null,
     images: (p.images || []).map((i: any) => i.url),
     attributes: Array.isArray(md.attributes) ? md.attributes : buildAttributes(md),
+    custom_options: Array.isArray(md.custom_options) ? md.custom_options : [],
     description: p.description || "",
     sizes: [],
   } as SampleProduct & { image_url: string | null; images: string[]; description: string }

@@ -90,6 +90,27 @@ export async function deleteLineItem(cartId: string, itemId: string): Promise<St
   return retrieveCart(cartId)
 }
 
+export type ConfigSelection = {
+  option_id: number
+  value_id?: number
+  value_ids?: number[]
+  text?: string
+}
+
+// Adds a configured product (custom options) with a server-computed price.
+export async function addConfiguredLine(
+  cartId: string,
+  variantId: string,
+  quantity: number,
+  selections: ConfigSelection[]
+): Promise<StoreCart | null> {
+  await api(`/store/carts/${cartId}/configure`, {
+    method: "POST",
+    body: JSON.stringify({ variant_id: variantId, quantity, selections }),
+  })
+  return retrieveCart(cartId) // refetch with full fields
+}
+
 // ── Checkout ──────────────────────────────────────────────────────────────
 export async function updateCart(cartId: string, data: any): Promise<StoreCart> {
   const { cart } = await api<{ cart: StoreCart }>(`/store/carts/${cartId}?${CART_FIELDS}`, {

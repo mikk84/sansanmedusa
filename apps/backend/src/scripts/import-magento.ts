@@ -267,6 +267,49 @@ export default async function importMagento({ container }: ExecArgs) {
   }
   logger.info(`Magento import — ${vendorByName.size} vendors ready`)
 
+  // ── Custom options (configurable via Magento product options) ─────────────
+  // Drives the PDP configurator + custom-priced cart line. Captures every
+  // option type (select/radio/checkbox/field/area) with additive price deltas.
+  const optionRowsCO = await q(
+    `SELECT o.option_id, o.product_id, o.type, o.is_require, o.sort_order,
+            ot.title, op.price AS opt_price, op.price_type AS opt_price_type
+       FROM catalog_product_option o
+       JOIN catalog_product_option_title ot ON ot.option_id = o.option_id AND ot.store_id = 0
+       LEFT JOIN catalog_product_option_price op ON op.option_id = o.option_id AND op.store_id = 0`
+  )
+  const valueRowsCO = await q(
+    `SELECT v.option_id, v.option_type_id, v.sort_order, vt.title,
+            vp.price, vp.price_type
+       FROM catalog_product_option_type_value v
+       JOIN catalog_product_option_type_title vt ON vt.option_type_id = v.option_type_id AND vt.store_id = 0
+       LEFT JOIN catalog_product_option_type_price vp ON vp.option_type_id = v.option_type_id AND vp.store_id = 0
+      ORDER BY v.sort_order`
+  )
+  const valuesByOption = new Map<number, any[]>()
+  for (const v of valueRowsCO) {
+    if (!valuesByOption.has(v.option_id)) valuesByOption.set(v.option_id, [])
+    valuesByOption.get(v.option_id)!.push({
+      id: v.option_type_id,
+      title: v.title,
+      price: Number(v.price) || 0,
+      price_type: v.price_type || "fixed",
+    })
+  }
+  const customOptionsByProduct = new Map<number, any[]>()
+  for (const o of optionRowsCO.sort((a, b) => a.sort_order - b.sort_order)) {
+    if (!customOptionsByProduct.has(o.product_id)) customOptionsByProduct.set(o.product_id, [])
+    customOptionsByProduct.get(o.product_id)!.push({
+      id: o.option_id,
+      title: o.title,
+      type: o.type, // drop_down | radio | checkbox | multiple | field | area | file
+      required: Number(o.is_require) === 1,
+      price: Number(o.opt_price) || 0, // option-level price (field/area)
+      price_type: o.opt_price_type || "fixed",
+      values: valuesByOption.get(o.option_id) || [],
+    })
+  }
+  logger.info(`Magento import — custom options for ${customOptionsByProduct.size} products`)
+
   // ── Build product payloads ────────────────────────────────────────────────
   const existingProducts = await productService.listProducts({}, { take: 20000, select: ["id"], relations: [] })
   // We dedupe by handle/sku via a fresh variant-sku lookup instead:
@@ -318,6 +361,9 @@ export default async function importMagento({ container }: ExecArgs) {
     }
     // Display-ready, labelled, fully-resolved attribute list for the PDP.
     metadata.attributes = buildDisplayAttributes(bag, attrByCode, optionLabel)
+    // Configurable options (Magento custom options) for the PDP configurator.
+    const customOptions = customOptionsByProduct.get(p.entity_id)
+    if (customOptions?.length) metadata.custom_options = customOptions
 
     const catIds = [...(productCats.get(p.entity_id) || [])]
 

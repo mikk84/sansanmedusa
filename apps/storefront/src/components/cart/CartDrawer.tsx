@@ -13,6 +13,7 @@ type CartItem = {
   unit_price: number // cents
   thumbnail?: string
   variant_title?: string
+  options?: { title: string; value: string }[]
 }
 
 type Props = {
@@ -39,6 +40,9 @@ export function CartDrawer({
     unit_price: toCents(it.unit_price),
     thumbnail: it.thumbnail || undefined,
     variant_title: it.variant_title && it.variant_title !== "Standard" ? it.variant_title : undefined,
+    options: Array.isArray(it.metadata?.configured_options)
+      ? it.metadata.configured_options.map((o: any) => ({ title: o.title, value: o.value }))
+      : undefined,
   }))
   const hasFreeShipping = total >= freeShippingThreshold
   const progressPct = Math.min((total / freeShippingThreshold) * 100, 100)
@@ -183,12 +187,21 @@ function CartItem({ item }: { item: CartItem }) {
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-[10px] text-[#999] tracking-[.05em] uppercase mb-[2px]">{item.brand}</p>
-        <p className="text-[13px] font-semibold text-[#0D0D0D] leading-snug mb-[7px]">
+        <p className="text-[13px] font-semibold text-[#0D0D0D] leading-snug mb-[4px]">
           {item.title}
           {item.variant_title && (
             <span className="font-normal text-[#777]"> · {item.variant_title}</span>
           )}
         </p>
+        {item.options?.length ? (
+          <ul className="mb-[7px] flex flex-col gap-[1px]">
+            {item.options.map((o, i) => (
+              <li key={i} className="text-[10px] text-[#888] leading-tight">
+                {o.title}: <span className="text-[#0D0D0D]">{o.value}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
         <div className="flex items-center justify-between">
           <QuantityControl itemId={item.id} quantity={item.quantity} />
           <span className="text-[14px] font-bold text-[#0D0D0D]">
