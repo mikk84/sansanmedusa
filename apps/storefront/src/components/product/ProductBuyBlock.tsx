@@ -4,6 +4,7 @@ import { useState, useMemo } from "react"
 import type { SampleProduct, CustomOption } from "@/lib/sample-data"
 import { useCart } from "@/lib/cart-context"
 import type { ConfigSelection } from "@/lib/store-client"
+import { computeSurchargeCents, hasMissingRequired } from "@/lib/configurator-price"
 
 const eur = (cents: number) => `${(cents / 100).toFixed(2).replace(".", ",")} €`
 
@@ -18,35 +19,13 @@ export function ProductBuyBlock({ product }: { product: SampleProduct }) {
   const [multi, setMulti] = useState<Record<number, number[]>>({})
   const [text, setText] = useState<Record<number, string>>({})
 
-  // live surcharge (cents)
-  const surcharge = useMemo(() => {
-    let s = 0
-    for (const opt of options) {
-      const delta = (v: { price: number; price_type: string }) =>
-        v.price_type === "percent" ? (basePrice * v.price) / 100 : v.price * 100
-      if (opt.type === "checkbox" || opt.type === "multiple") {
-        for (const vid of multi[opt.id] || []) {
-          const v = opt.values.find((x) => x.id === vid)
-          if (v) s += delta(v)
-        }
-      } else if (opt.type === "field" || opt.type === "area") {
-        if (text[opt.id]) s += opt.price_type === "percent" ? (basePrice * opt.price) / 100 : opt.price * 100
-      } else {
-        const v = opt.values.find((x) => x.id === single[opt.id])
-        if (v) s += delta(v)
-      }
-    }
-    return Math.round(s)
-  }, [options, single, multi, text, basePrice])
-
+  // live surcharge (cents) — shared pure logic, unit-tested in configurator-price.test.ts
+  const surcharge = useMemo(
+    () => computeSurchargeCents(options, { single, multi, text }, basePrice),
+    [options, single, multi, text, basePrice]
+  )
   const total = basePrice + surcharge
-
-  const missingRequired = options.some((opt) => {
-    if (!opt.required) return false
-    if (opt.type === "checkbox" || opt.type === "multiple") return !(multi[opt.id]?.length)
-    if (opt.type === "field" || opt.type === "area") return !text[opt.id]?.trim()
-    return single[opt.id] == null
-  })
+  const missingRequired = hasMissingRequired(options, { single, multi, text })
 
   const buildSelections = (): ConfigSelection[] => {
     const sel: ConfigSelection[] = []

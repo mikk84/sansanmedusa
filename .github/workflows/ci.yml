@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Type-check (both apps)
+        run: pnpm type-check
+
+      - name: Unit tests
+        run: pnpm test
+
+      # `medusa build` compiles the backend + admin SPA; needs no database.
+      - name: Build backend + admin
+        run: pnpm --filter @sansanmedusa/backend build
+        env:
+          # build-time only; not used to connect to anything during compile
+          DATABASE_URL: postgres://user:pass@localhost:5432/db
+          JWT_SECRET: ci-build-secret-not-used
+          COOKIE_SECRET: ci-build-secret-not-used

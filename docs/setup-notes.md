@@ -111,13 +111,11 @@ blank renders. Three changes fixed the whole class:
 > webpack fail with `Can't resolve 'next-flight-client-entry-loader'` and routes
 > 404. Fix: stop the storefront, `rm -rf apps/storefront/.next`, restart.
 
-> **Known issue — `medusa build` fails type-check.** With `moduleResolution:
-> bundler`, `tsc` now type-checks the backend modules and surfaces *real* type
-> errors that dev mode (transpileOnly) skipped: montonio's
-> `AbstractPaymentProvider` method signatures, a `MeiliSearch`→`Meilisearch`
-> casing typo in the search module, some `unknown`-typed service resolutions,
-> and a workflow return type. These don't affect `medusa develop` or the demo,
-> but must be fixed before a production build. Tracked as a follow-up.
+> **Resolved — `medusa build` passes.** Switching to `moduleResolution: bundler`
+> surfaced real backend type errors (montonio's `AbstractPaymentProvider`
+> signatures, a `MeiliSearch`→`Meilisearch` casing typo, `unknown`-typed service
+> resolutions, a workflow return type). All fixed (commit `4d201c1`); `medusa
+> build` now completes for both backend and admin (exit 0).
 
 ### Admin login (local)
 `http://localhost:9000/app` — `mikk@mikk.ee` / `SanSan2024!`. First load after a

@@ -51,3 +51,6 @@ media/
 
 # Local image serving — symlink to the gitignored media/ folder
 apps/backend/static/
+
+# TypeScript incremental build info
+*.tsbuildinfo
