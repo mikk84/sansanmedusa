@@ -134,6 +134,11 @@ cd apps/backend && pnpm exec medusa exec ./src/scripts/import-magento.ts
 | [Product migration](docs/product-migration.md) | Running the Magento CSV import |
 | [Development guide](docs/development.md) | Local setup, environment variables, common commands |
 | [Setup notes & build log](docs/setup-notes.md) | Gotchas, current status, why certain files look the way they do |
+| [ADRs](docs/adr/) | Architecture decision records — the *why* behind the load-bearing choices |
+| [Architecture review](docs/architecture-review.md) | Consolidated quality audit, fact-checked findings + prioritised action plan |
+| [Independent review](docs/independent-review.md) | Critical external audit (severity-ranked, file:line) |
+| [Remediation plan](docs/remediation-plan.md) | **Work-ready** pre-production checklist (phased) |
+| [Security audit](docs/security-audit.md) | Security findings + pre-launch checklist |
 
 ---
 
