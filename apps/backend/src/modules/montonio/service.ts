@@ -35,8 +35,8 @@ export class MontonioPaymentService extends AbstractPaymentProvider<MontonioOpti
 
   constructor(container: any, options: MontonioOptions) {
     super(container, options)
-    this.options = options
-    this.apiUrl = API_URLS[options.environment] || API_URLS.sandbox
+    this.options = options || ({} as MontonioOptions)
+    this.apiUrl = API_URLS[this.options.environment] || API_URLS.sandbox
   }
 
   async initiatePayment(input: any) {

@@ -235,6 +235,28 @@ already stubbed in `.env`).
   chosen options in `configured_options` metadata. The cart drawer + order show
   the selected options. Verified: Duschy Square 553 + 38 + 14 + 23 = **628 €**.
 
+## Modules wired: search, invoice, payment (remediation C1 — done)
+
+These modules existed under `src/modules/` but weren't registered in
+`medusa-config.js`, so the documented search/invoice/payment pipeline never ran.
+Now registered + wired:
+
+- **Search (Meilisearch):** `{ resolve: "./src/modules/search", options: { host,
+  apiKey } }`. The `product-search` subscriber (create/update/delete) keeps the
+  index in sync; **`pnpm exec medusa exec ./src/scripts/reindex-search.ts`** does
+  the one-time backfill / full rebuild (4,095 products). Typo-tolerant search +
+  filterable facets (brand, category, price, stock) — this is the intended path
+  for PLP filtering even while brand stays in metadata (see [ADR 0004](adr/0004-product-data-model-metadata.md)).
+- **Invoice (Resend):** `{ resolve: "./src/modules/invoice" }`. The `order-placed`
+  subscriber calls `generateAndSend` (isolated in try/catch; VAT from the order's
+  tax lines). **Real delivery needs a live `RESEND_API_KEY`** (placeholder today).
+- **Payment:** `@medusajs/medusa/payment` with Montonio as provider
+  `pp_montonio_montonio` (its index is now a `ModuleProvider(Modules.PAYMENT)`,
+  not a `Module`). The demo checkout keeps `pp_system_default`. Montonio go-live
+  (real keys, region link, webhook amount/replay hardening) = remediation #29.
+  Note: the `/hooks/payment/montonio` route still resolves the old module key and
+  must be updated when #29 wires the live webhook.
+
 ## Tax / VAT (remediation C2 — done)
 
 - **EE tax region @ 24%** (Estonia standard VAT since 2025-07-01) created by

@@ -10,6 +10,11 @@ each finding below **fact-checked against the running system**.
 
 ---
 
+> **Progress update (2026-07-01):** the two CRITICAL items are **resolved** —
+> **C1** (montonio/invoice/search now registered + wired; 4,095 products indexed;
+> invoice fires on order.placed) and **C2** (EE VAT @ 24%, tax-inclusive; orders
+> carry correct tax). Live status tracked in [remediation-plan.md](remediation-plan.md).
+
 ## Verdict
 
 The **stack and shape are right**; the **execution is demo-grade in important

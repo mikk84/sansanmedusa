@@ -100,7 +100,12 @@ export class SearchModuleService extends MedusaService({}) {
   }
 
   private transform(product: any) {
-    const price = product.variants?.[0]?.prices?.[0]?.amount || 0
+    const variantPrices = product.variants?.[0]?.price_set?.prices
+    const price =
+      variantPrices?.find((p: any) => p.currency_code === "eur")?.amount ??
+      variantPrices?.[0]?.amount ??
+      product.variants?.[0]?.prices?.[0]?.amount ??
+      0
     return {
       id: product.id,
       sku: product.metadata?.sku,

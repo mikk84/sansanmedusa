@@ -19,11 +19,17 @@ sequencing — do phases top to bottom. Each item lists **file(s)**, **effort**
 ## Phase 1 — Truth-up: wire what the docs claim (CRITICAL)
 Stop shipping a demo that reads as production.
 
-- [ ] **C1 — Register the `montonio`, `invoice`, `search` modules.** `apps/backend/medusa-config.js:20-42`. **M**
-  - Add them to the `modules` array; resolve env options.
-  - **Search:** add a `product.created`/`product.updated` subscriber that indexes into Meilisearch; verify `SearchModuleService.setupIndex()` runs and the index populates.
-  - **Invoice:** call `InvoiceModuleService.generateAndSend()` from an `order.placed` step (or dedicated subscriber).
-  - *Accept:* placing an order produces a Meilisearch-searchable catalog + an emailed invoice; Montonio appears as a payment provider.
+- [x] **C1 — Register + wire the `montonio`, `invoice`, `search` modules. DONE.**
+  - **Search:** registered (Meilisearch host/key); `product-search` subscriber
+    (create/update/delete) keeps it in sync; `scripts/reindex-search.ts` backfilled
+    **4,095 products**. Verified: typo-tolerant search + faceted `brand=Grohe` (381 hits).
+  - **Invoice:** registered; `order-placed` subscriber calls `generateAndSend`,
+    isolated in try/catch. Verified firing (order #3). Real delivery needs a live
+    `RESEND_API_KEY`; VAT is taken from the order's tax lines (C2).
+  - **Montonio:** converted `Module` → `ModuleProvider(Modules.PAYMENT)`; registered
+    as `pp_montonio_montonio` under `@medusajs/medusa/payment`. Demo checkout still
+    uses `pp_system_default` (verified order #4). Going live (real keys, region
+    link, webhook hardening) = task #29.
 - [x] **C2 — Configure EE VAT. DONE.** `apps/backend/src/scripts/tax-setup.ts` (idempotent).
   - Created EE tax region + **24%** rate (EE standard VAT since 2025-07-01, per user); price preferences set **tax-inclusive** (catalog prices are gross).
   - Invoice now derives VAT from the order's **tax lines** (24% fallback only); storefront shows real VAT from `cart.tax_total`; UI strings 22% → 24%.
