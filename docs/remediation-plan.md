@@ -24,10 +24,10 @@ Stop shipping a demo that reads as production.
   - **Search:** add a `product.created`/`product.updated` subscriber that indexes into Meilisearch; verify `SearchModuleService.setupIndex()` runs and the index populates.
   - **Invoice:** call `InvoiceModuleService.generateAndSend()` from an `order.placed` step (or dedicated subscriber).
   - *Accept:* placing an order produces a Meilisearch-searchable catalog + an emailed invoice; Montonio appears as a payment provider.
-- [ ] **C2 — Configure EE VAT.** `apps/backend/src/scripts/checkout-setup.ts`. **M**
-  - Create an Estonia tax region + **22%** rate; decide & document **gross vs net** (EE B2C is conventionally tax-inclusive → set `is_tax_inclusive`, treat imported prices as gross).
-  - Derive invoice VAT from the order's **tax lines**, not a hardcoded ÷1.22 (`invoice/service.ts:49-55`).
-  - *Accept:* order `tax_total` is non-zero and correct; storefront "22% KM" matches the engine; configured-option surcharges are taxed.
+- [x] **C2 — Configure EE VAT. DONE.** `apps/backend/src/scripts/tax-setup.ts` (idempotent).
+  - Created EE tax region + **24%** rate (EE standard VAT since 2025-07-01, per user); price preferences set **tax-inclusive** (catalog prices are gross).
+  - Invoice now derives VAT from the order's **tax lines** (24% fallback only); storefront shows real VAT from `cart.tax_total`; UI strings 22% → 24%.
+  - *Verified:* order #2 → gross 202.90 €, net 159.68 €, **VAT 39.27 €** (incl. taxed shipping); `medusa build` green.
 
 ## Phase 2 — Data-model remodel (do now, pre-orders — re-import is free)
 See [ADR 0004](adr/0004-product-data-model-metadata.md) and the data-model section of the review.

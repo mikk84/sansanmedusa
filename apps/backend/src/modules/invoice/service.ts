@@ -5,7 +5,8 @@ import { Resend } from "resend"
  * Generates a nicely-formatted Estonian VAT invoice as HTML (rendered to PDF
  * by the storefront or a headless browser), then emails it to the customer.
  *
- * Estonian VAT rate: 22% (standard, as of 2024)
+ * Estonian VAT rate: 24% (standard, from 2025-07-01). VAT is taken from the
+ * order's own tax lines; the rate here is display/fallback only.
  * Invoice must include: seller reg. no., VAT no., buyer details, line items,
  * subtotal excl. VAT, VAT amount, total incl. VAT.
  */
@@ -46,13 +47,16 @@ export class InvoiceModuleService extends MedusaService({}) {
   }
 
   private buildInvoiceHtml(order: any, invoiceNumber: string): string {
-    const VAT_RATE = 0.22
-    const subtotal = order.items.reduce(
-      (sum: number, item: any) => sum + item.unit_price * item.quantity,
-      0
-    )
-    const subtotalExclVat = subtotal / (1 + VAT_RATE)
-    const vatAmount = subtotal - subtotalExclVat
+    // Prefer the order's computed tax lines (authoritative); fall back to the
+    // standard EE rate only if an order predates tax configuration.
+    const VAT_RATE = 0.24 // EE standard VAT (display + fallback only)
+    const grossTotal =
+      order.total ??
+      order.items.reduce((s: number, i: any) => s + i.unit_price * i.quantity, 0)
+    const subtotalExclVat =
+      order.item_subtotal ?? order.subtotal ?? grossTotal / (1 + VAT_RATE)
+    const vatAmount = order.tax_total ?? grossTotal - subtotalExclVat
+    const subtotal = grossTotal
 
     const issueDate = new Date().toLocaleDateString("et-EE")
 
@@ -62,8 +66,8 @@ export class InvoiceModuleService extends MedusaService({}) {
       <tr>
         <td>${item.title}</td>
         <td style="text-align:center">${item.quantity}</td>
-        <td style="text-align:right">${fmt(item.unit_price / (1 + VAT_RATE))}</td>
-        <td style="text-align:right">${fmt((item.unit_price * item.quantity) / (1 + VAT_RATE))}</td>
+        <td style="text-align:right">${fmt((item.unit_price ?? 0) / (1 + VAT_RATE))}</td>
+        <td style="text-align:right">${fmt(item.subtotal ?? (item.unit_price * item.quantity) / (1 + VAT_RATE))}</td>
       </tr>`
       )
       .join("")
@@ -123,7 +127,7 @@ export class InvoiceModuleService extends MedusaService({}) {
 
 <table class="totals">
   <tr><td>Kokku km-ta:</td><td>${fmt(subtotalExclVat)} €</td></tr>
-  <tr><td>Käibemaks 22%:</td><td>${fmt(vatAmount)} €</td></tr>
+  <tr><td>Käibemaks 24%:</td><td>${fmt(vatAmount)} €</td></tr>
   <tr class="grand"><td><strong>Kokku km-ga:</strong></td><td><strong>${fmt(subtotal)} €</strong></td></tr>
 </table>
 </body>

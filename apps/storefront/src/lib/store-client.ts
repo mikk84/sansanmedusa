@@ -28,7 +28,7 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
 
 // The fields we want back on the cart everywhere.
 const CART_FIELDS =
-  "fields=*items,*items.variant,*items.product,*shipping_methods,*shipping_address,*billing_address,*payment_collection,*payment_collection.payment_sessions,+region.*,*items.thumbnail"
+  "fields=*items,*items.variant,*items.product,*shipping_methods,*shipping_address,*billing_address,*payment_collection,*payment_collection.payment_sessions,+region.*,*items.thumbnail,total,subtotal,tax_total,item_total,item_subtotal,item_tax_total,shipping_total"
 
 let cachedRegionId: string | null = null
 export async function getRegionId(): Promise<string> {

@@ -62,6 +62,8 @@ export function CheckoutClient() {
     toCents(cart?.shipping_methods?.[0]?.amount) ||
     toCents(shippingOptions.find((o) => o.id === selectedOption)?.amount)
   const grandTotal = total + shippingAmount
+  // VAT included in the (tax-inclusive) prices — real value from the cart's tax lines
+  const vatIncluded = toCents(cart?.tax_total)
 
   const valid =
     form.email && form.first_name && form.last_name &&
@@ -264,7 +266,11 @@ export function CheckoutClient() {
                 <span className="text-[14px] font-bold text-[#0D0D0D]">Kokku</span>
                 <span className="text-[20px] font-extrabold text-[#0D0D0D]">{eur(grandTotal)}</span>
               </div>
-              <p className="text-[11px] text-[#999]">Sisaldab 22% käibemaksu</p>
+              {vatIncluded > 0 && (
+                <p className="text-[11px] text-[#999]">
+                  Sisaldab käibemaksu (24%): {eur(vatIncluded)}
+                </p>
+              )}
             </div>
 
             <button

@@ -83,7 +83,7 @@ export default async function ProductPage({
             )}
           </div>
           <p className="text-[11px] text-[#999] mb-[13px]">
-            Sisaldab 22% KM{hasDiscount ? ` · Säästad ${(savings / 100).toFixed(0)} €` : ""}
+            Sisaldab 24% KM{hasDiscount ? ` · Säästad ${(savings / 100).toFixed(0)} €` : ""}
           </p>
 
           {/* availability */}

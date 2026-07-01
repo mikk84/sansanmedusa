@@ -235,6 +235,19 @@ already stubbed in `.env`).
   chosen options in `configured_options` metadata. The cart drawer + order show
   the selected options. Verified: Duschy Square 553 + 38 + 14 + 23 = **628 €**.
 
+## Tax / VAT (remediation C2 — done)
+
+- **EE tax region @ 24%** (Estonia standard VAT since 2025-07-01) created by
+  `src/scripts/tax-setup.ts` (idempotent). Change `VAT_RATE` there if the rate changes.
+- **Prices are tax-inclusive** (gross) — the migrated Magento prices are retail,
+  so the EUR-currency + Eesti-region **price preferences are `is_tax_inclusive`**;
+  Medusa *extracts* VAT from the gross rather than adding it on top. The customer's
+  total is unchanged; the order's `tax_total` shows the VAT portion.
+- The storefront checkout shows the **real** VAT from `cart.tax_total` (not a
+  hardcoded string); the invoice derives VAT from the order's tax lines.
+- Verified: order → gross 202.90 €, net 159.68 €, **VAT 39.27 €** (incl. shipping).
+- Run order for a fresh DB: `db:migrate` → `checkout-setup.ts` → **`tax-setup.ts`**.
+
 ## Cart & checkout
 
 - **Cart** is a real Medusa cart. `lib/store-client.ts` (browser) wraps the
